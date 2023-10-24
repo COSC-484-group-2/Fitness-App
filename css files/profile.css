@@ -1,0 +1,66 @@
+.profile-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 105px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    background: rgba(45, 45, 45, 0.7);
+    padding: 5px;
+    padding: 15px;
+    border-top: solid 1px white;
+    border-bottom: solid 1px white;
+    border-radius: 20px;
+}
+.manage-profile {
+    color: white;
+    font-size: 50px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+.email-section, .password-section, .name-section{
+    flex: 1;
+    color: white;
+    font-size: 20px;
+    padding: 2px;
+    margin-bottom: 10px;
+    border-bottom: solid 2px white;
+    border-radius: 5px;
+}
+.change-email, .change-password, .change-name{
+    margin-left: auto;
+    background-color: transparent;
+    border: none;
+    width: 90px;
+
+    color: rgb(255, 255, 255);
+}
+.change-email:hover, .change-password:hover, .change-name:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+.change-password {
+    width: 110px;
+}
+.logout {
+    margin:auto;
+    margin-top: 15px;
+    width: 110px;
+    height: 40px;
+    font-size: 17px;
+    color: white;
+    background: rgb(45, 45, 45);
+    border: solid 3px white;
+    border-radius: 25px;
+    cursor: pointer;
+
+    transition: background-color 0.5s, color 0.5s;
+}
+.logout:hover {
+    background: white;
+    color: rgb(45, 45, 45)
+}

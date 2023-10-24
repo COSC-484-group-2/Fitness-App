@@ -1,0 +1,22 @@
+*{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+}
+body{
+    font-family: sans-serif;
+    background-color: rgb(20, 20, 20);
+}
+.loginheading {
+    width: 400px;
+    height: 40px;
+    border: 2px;
+    color: white;
+}
+.loginheading2{
+    width: 300px;
+    height: 40px;
+    border: 2px;
+    color: white;
+}

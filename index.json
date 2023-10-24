@@ -1,0 +1,182 @@
+{
+    "#comment": "",
+    "html": {
+      "@lang": "en",
+      "head": {
+        "title": "Welcome Back!",
+        "link": [
+          {
+            "@rel": "stylesheet",
+            "@href": "css files/general.css"
+          },
+          {
+            "@rel": "stylesheet",
+            "@href": "css files/header.css"
+          },
+          {
+            "@rel": "stylesheet",
+            "@href": "css files/index.css"
+          }
+        ]
+      },
+      "body": {
+        "@style": "background-image: url('pics/blacksteel.webp');",
+        "script": {
+          "@src": "js files/main.js"
+        },
+        "nav": {
+          "label": {
+            "a": {
+              "@class": "logo",
+              "@href": "index.html",
+              "#text": "MyFIT"
+            }
+          },
+          "ul": {
+            "li": [
+              {
+                "a": {
+                  "@class": "home-head",
+                  "@href": "index.html",
+                  "#text": "Home"
+                }
+              },
+              {
+                "a": {
+                  "@class": "progress-head",
+                  "@href": "progress.html",
+                  "#text": "Progress"
+                }
+              },
+              {
+                "a": {
+                  "@class": "workouts-head",
+                  "@href": "workouts.html",
+                  "#text": "Workout"
+                }
+              },
+              {
+                "a": {
+                  "@class": "au-head",
+                  "@href": "aboutus.html",
+                  "#text": "About Us"
+                }
+              },
+              {
+                "a": {
+                  "@class": "signup-login-head",
+                  "@href": "login.html",
+                  "#text": "Sign Up/Login"
+                }
+              }
+            ],
+            "a": {
+              "@href": "profile.html",
+              "@id": "link",
+              "img": {
+                "@src": "pics/profile.jpeg",
+                "@alt": "profile",
+                "@class": "profile"
+              }
+            }
+          },
+          "div": {
+            "@class": "dropdown",
+            "button": {
+              "@class": "dropbtn",
+              "img": {
+                "@src": "pics/hamburger-menu.png",
+                "@class": "hamburger-menu"
+              }
+            },
+            "div": {
+              "@class": "dropdown-content",
+              "a": [
+                {
+                  "@href": "index.html",
+                  "#text": "Home"
+                },
+                {
+                  "@href": "progress.html",
+                  "#text": "Progress"
+                },
+                {
+                  "@href": "workouts.html",
+                  "#text": "Workout"
+                },
+                {
+                  "@href": "signup.html",
+                  "#text": "Sign Up/Login"
+                }
+              ]
+            }
+          }
+        },
+        "div": [
+          {
+            "@class": "homepara",
+            "small": "Welcome to MyFit",
+            "h1": "The Best At Home Gym",
+            "h2": "Never Leave Your Home For a Workout",
+            "h3": "Ever Again",
+            "br": [
+              "",
+              ""
+            ],
+            "a": {
+              "@href": "aboutus.html",
+              "button": {
+                "@type": "text",
+                "@class": "learn-about-us",
+                "#text": "Learn About Us"
+              }
+            },
+            "script": {
+              "@src": "./main.js"
+            }
+          },
+          {
+            "@class": "dumbbell",
+            "img": [
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              },
+              {
+                "@src": "pics/dumbbell.png"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }

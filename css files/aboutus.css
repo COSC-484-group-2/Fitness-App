@@ -1,0 +1,24 @@
+.au-board {
+    padding: 105px 30px;
+}
+.au-section {
+    padding: 10px 30px;
+    background: rgba(45, 45, 45, 0.7);
+    border-bottom: solid 1px white;
+    border-top: solid 1px white;
+    border-radius: 20px;
+}
+.mstate{
+    font-size: 30px;
+    color:white;
+    text-align: center;
+}
+.title{
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:white;
+    font-size: 65px;
+}
