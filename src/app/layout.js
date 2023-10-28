@@ -1,20 +1,35 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
 import { ClientProviders } from "@/components/client-providers";
+import { Inter as FontSans } from "next/font/google";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["latin"] });
-
+export const fontSans = FontSans({
+    subsets: ["latin"],
+    variable: "--font-sans",
+});
 export const metadata = {
     title: "Fitness App",
     description: "Fitness App Group Project",
 };
 
 export default function RootLayout({ children }) {
+    
     return (
-        <html lang="en">
-            <body className={inter.className}>
+        <html lang="en" suppressHydrationWarning>
+            <body
+                className={cn(
+                    "min-h-screen bg-background font-sans antialiased",
+                    fontSans.variable,
+                )}
+            >
+                <div
+                    className="fixed w-full h-full bg-no-repeat bg-cover bg-center -z-10 opacity-60 animate-mask-flare-loop"
+                    style={{
+                        backgroundImage: "url(/images/effect.png)",
+                    }}
+                />
                 <svg
-                    className="absolute inset-0 -z-10 h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_right,black,transparent)]"
+                    className="absolute opacity-30 inset-0 -z-10 h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_right,black,transparent)]"
                     aria-hidden="true"
                 >
                     <defs>
@@ -29,7 +44,7 @@ export default function RootLayout({ children }) {
                             <path d="M100 200V.5M.5 .5H200" fill="none"/>
                         </pattern>
                     </defs>
-                    <svg x="90%" y={-1} className="overflow-visible fill-gray-900">
+                    <svg x="90%" y={-1} className="overflow-visible fill-card">
                         <path
                             d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
                             strokeWidth={0}
@@ -40,6 +55,21 @@ export default function RootLayout({ children }) {
                 <ClientProviders>
                     {children}
                 </ClientProviders>
+                <div
+                    className="dumbbell w-full flex fixed bottom-0 justify-around items-center select-none pointer-events-none">
+                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>
+                    {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
+                    {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
+                    {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
+                    {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
+                    {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
+                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>
+                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                </div>
             </body>
         </html>
     );

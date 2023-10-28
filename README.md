@@ -14,6 +14,13 @@ npm run dev
 
 Open [http://127.0.0.1:3000](http://127.0.0.1:3000). (do not use `localhost`)
 
+## Resources
+
+- Styles: [Tailwind CSS](https://tailwindcss.com/) | [Cheat sheet](https://nerdcave.com/tailwind-cheat-sheet)
+- Components: [shadcn/ui](https://ui.shadcn.com/docs/components/accordion)
+- Next.js
+    - [Navigating between pages](https://nextjs.org/learn/dashboard-app/navigating-between-pages)
+
 ## HTML to React
 
 ### HTML
