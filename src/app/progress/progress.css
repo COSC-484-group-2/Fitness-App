@@ -1,0 +1,30 @@
+/* Common styles for all h1 elements with the class "metrics" */
+.metrics {
+    border: 2px solid white;
+    padding: 10px;
+    text-align: center;
+    border-style:groove;
+    height: 350px;
+    width:100%;
+}
+
+.metrics:first-child {
+    border-radius: 15px 0 0 15px;
+}
+
+.metrics:last-child {
+    border-radius: 0 15px 15px 0;
+}
+
+.progress-board {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    gap: 35px;
+    padding: 80px 20px;
+}
+
+.metrics h1 {
+    text-align: center;
+    margin: 0;
+}
