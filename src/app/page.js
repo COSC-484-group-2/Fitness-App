@@ -7,7 +7,7 @@ import { HomePageResources } from "@/components/resource";
 export default function () {
     
     const { data: session, status } = useSession();
-    const firstName = session.user.name.split(" ")[0];
+    const firstName = session?.user?.name?.split(" ")?.[0];
     
     if (status === "loading") return null;
     
