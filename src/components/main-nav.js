@@ -29,6 +29,9 @@ export function MainNav({ className, ...props }) {
                         <NavLink href="/workout" selected={pathname.includes("/workout")}>
                             Workout
                         </NavLink>
+                        <NavLink href="/about-us" selected={pathname.includes("/about-us")}>
+                            About Us
+                        </NavLink>
                     </>}
                     {status === "unauthenticated" && <NavLink href="/login" selected={pathname.includes("/login")}>
                         Login
