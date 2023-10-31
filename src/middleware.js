@@ -7,4 +7,4 @@ export default withAuth({
     },
 });
 
-export const config = { matcher: ["/progress", "/workout"] };
+export const config = { matcher: ["/progress", "/workout", "/about-us"] };
