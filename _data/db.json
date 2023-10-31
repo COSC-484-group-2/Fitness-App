@@ -1,0 +1,27 @@
+{
+    "Upper-Body": [
+        {
+            "id": 1,
+            "name": "Bench Press",
+            "target": "Chest"
+        }
+    ],
+    "Lower-Body": [
+        {
+            "id": 1,
+            "name": "Squats"
+        }
+    ],
+    "Full-Body": [
+        {
+            "id": 1,
+            "name": "Burpees"
+        }
+    ],
+    "Cardio": [
+        {
+            "id": 1,
+            "name": "Running"
+        }
+    ]
+}
