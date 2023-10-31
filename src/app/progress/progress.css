@@ -1,30 +1,43 @@
-/* Common styles for all h1 elements with the class "metrics" */
-.metrics {
+.metric {
+    flex:1;
     border: 2px solid white;
+    margin: 2px;
     padding: 10px;
     text-align: center;
     border-style:groove;
-    height: 350px;
-    width:100%;
+    height: 400px;
+    max-width:960px;
+    width:95%;
+    transition:background-color 0.3s;
+    font-size: 20px;
 }
 
-.metrics:first-child {
+.metric:first-child {
     border-radius: 15px 0 0 15px;
 }
 
-.metrics:last-child {
+.metric:last-child {
     border-radius: 0 15px 15px 0;
 }
 
 .progress-board {
-    display: grid;
+    display: flex;
+    flex-flow: row wrap;
     grid-template-columns: 1fr 1fr 1fr;
     justify-content: center;
-    gap: 35px;
+    gap:5px;
     padding: 80px 20px;
 }
 
-.metrics h1 {
-    text-align: center;
-    margin: 0;
-}
+
+@media (max-width: 1500px) {
+    .progress-board {
+        grid-template-columns: 1fr 1fr;
+    }
+ } 
+
+ @media (max-width: 900px) {
+    .progress-board {
+        grid-template-columns: 1fr;
+    }
+ }
