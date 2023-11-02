@@ -1,4 +1,4 @@
-import "./globals.css";
+import "./style/globals.css";
 import { ClientProviders } from "@/components/client-providers";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";

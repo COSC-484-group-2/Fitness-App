@@ -4,24 +4,107 @@
             "id": 1,
             "name": "Bench Press",
             "target": "Chest"
+        },
+        {
+            "id": 2,
+            "name": "Push Ups",
+            "target": "Chest"
+        },
+        {
+            "id": 3,
+            "name": "Pull Ups",
+            "target": "Back"
+        },
+        {
+            "id": 4,
+            "name": "Bent Over Rows",
+            "target": "Back"
+        },
+        {
+            "id": 5,
+            "name": "Shoulder Press",
+            "target": "Shoulders"
+        },
+        {
+            "id": 6,
+            "name": "Lateral Raises",
+            "target": "Shoulders"
+        },
+        {
+            "id": 7,
+            "name": "Bicep Curls",
+            "target": "Biceps"
+        },
+        {
+            "id": 8,
+            "name": "Tricep Extensions",
+            "target": "Triceps"
         }
     ],
     "Lower-Body": [
         {
             "id": 1,
-            "name": "Squats"
+            "name": "Squats",
+            "target": "Quads"
+        },
+        {
+            "id": 2,
+            "name": "Lunges",
+            "target": "Quads"
+        },
+        {
+            "id": 3,
+            "name": "Deadlifts",
+            "target": "Hamstrings"
+        },
+        {
+            "id": 4,
+            "name": "Calf Raises",
+            "target": "Calves"
+        },
+        {
+            "id": 5,
+            "name": "Leg Press",
+            "target": "Quads"
         }
     ],
     "Full-Body": [
         {
             "id": 1,
-            "name": "Burpees"
+            "name": "Burpees",
+            "target": "Triceps, Biceps, Chest, Quads"
+        },
+        {
+            "id": 2,
+            "name": "Mountain Climbers",
+            "target": "Triceps, Core, Chest, Quads"
+        },
+        {
+            "id": 3,
+            "name": "Plank",
+            "target": "Core, Shoulders"
         }
     ],
     "Cardio": [
         {
             "id": 1,
-            "name": "Running"
+            "name": "Running",
+            "target": "Cardiovascular"
+        },
+        {
+            "id": 2,
+            "name": "Cycling",
+            "target": "Cardiovascular"
+        },
+        {
+            "id": 3,
+            "name": "Swimming",
+            "target": "Cardiovascular"
+        },
+        {
+            "id": 4,
+            "name": "Rowing",
+            "target": "Cardiovascular"
         }
     ]
 }
