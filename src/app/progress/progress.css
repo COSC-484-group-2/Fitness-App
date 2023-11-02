@@ -1,0 +1,43 @@
+.metric {
+    flex:1;
+    border: 2px solid white;
+    margin: 2px;
+    padding: 10px;
+    text-align: center;
+    border-style:groove;
+    height: 400px;
+    max-width:960px;
+    width:95%;
+    transition:background-color 0.3s;
+    font-size: 20px;
+}
+
+.metric:first-child {
+    border-radius: 15px 0 0 15px;
+}
+
+.metric:last-child {
+    border-radius: 0 15px 15px 0;
+}
+
+.progress-board {
+    display: flex;
+    flex-flow: row wrap;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    gap:5px;
+    padding: 80px 20px;
+}
+
+
+@media (max-width: 1500px) {
+    .progress-board {
+        grid-template-columns: 1fr 1fr;
+    }
+ } 
+
+ @media (max-width: 900px) {
+    .progress-board {
+        grid-template-columns: 1fr;
+    }
+ }

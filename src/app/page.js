@@ -7,6 +7,7 @@ import { HomePageResources } from "@/components/resource";
 export default function () {
     
     const { data: session, status } = useSession();
+    const firstName = session?.user?.name?.split(" ")?.[0];
     
     if (status === "loading") return null;
     
@@ -27,7 +28,7 @@ export default function () {
         return (
             <div className="container max-w-6xl pt-16 space-y-4">
                 <p className="text-3xl md:text-4xl font-bold">Welcome back, <span
-                    className="text-primary">{session.user.name}</span></p>
+                    className="text-primary">{firstName}</span></p>
                 <HomePageResources/>
             </div>
         );
