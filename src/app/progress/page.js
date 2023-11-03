@@ -6,6 +6,15 @@ import { useSession } from "next-auth/react";
 import { FiBarChart } from "@react-icons/all-files/fi/FiBarChart";
 import { FiDribbble } from "@react-icons/all-files/fi/FiDribbble";
 import {Resource} from '@/components/resource';
+import { ImUnlocked } from 'react-icons/im';
+import { GiWeightScale } from 'react-icons/gi';
+import { GiNotebook } from 'react-icons/gi';
+
+
+
+
+
+
 
 export default function () {
     
@@ -17,13 +26,13 @@ export default function () {
             href: "/progress/personal-records",
             name: "Personal Records",
             description:"Keep track of all your PRs",
-            icon: FiBarChart,
+            icon: ImUnlocked,
         },
         {
             href: "/caloric-intake",
             name: "Caloric Intake",
             description:"Track what you eat and your calories",
-            icon: FiDribbble,
+            icon: GiNotebook,
         },
 
         {
@@ -31,7 +40,7 @@ export default function () {
             name: "Body Metrics",
             description:
                 "Update and keep track of your height, weight, BMI, and more",
-            icon: FiDribbble,
+            icon: GiWeightScale,
         },
     ];
     
