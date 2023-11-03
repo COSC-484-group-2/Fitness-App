@@ -14,7 +14,7 @@ export default function () {
     
     const resources = [
         {
-            href: "/personal-records",
+            href: "/progress/personal-records",
             name: "Personal Records",
             description:"Keep track of all your PRs",
             icon: FiBarChart,
