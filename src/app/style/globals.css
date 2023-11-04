@@ -107,6 +107,7 @@
 .dumbbell img {
     animation: dumbbell 15s linear infinite;
     opacity: 0;
+    z-index: -1;
 }
 
 .dumbbell img:nth-child(1) {
@@ -182,3 +183,11 @@
     opacity: 0.3;
 }
 
+.resource-with-content-body::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.resource-with-content-body::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 0.25rem;
+}

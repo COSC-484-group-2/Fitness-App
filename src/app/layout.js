@@ -23,13 +23,13 @@ export default function RootLayout({ children }) {
                 )}
             >
                 <div
-                    className="fixed w-full h-full bg-no-repeat bg-cover bg-center -z-10 opacity-60 animate-mask-flare-loop"
+                    className="fixed w-full h-full bg-no-repeat bg-cover bg-center -z-10 opacity-90 animate-mask-flare-loop"
                     style={{
                         backgroundImage: "url(/images/effect.png)",
                     }}
                 />
                 <svg
-                    className="absolute opacity-30 inset-0 -z-10 h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_right,black,transparent)]"
+                    className="absolute opacity-20 inset-0 -z-10 h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_right,black,transparent)]"
                     aria-hidden="true"
                 >
                     <defs>
@@ -53,22 +53,24 @@ export default function RootLayout({ children }) {
                     <rect width="100%" height="100%" strokeWidth={0} fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)"/>
                 </svg>
                 <ClientProviders>
-                    {children}
+                    <div className="container max-w-6xl pt-16 space-y-4 pb-16">
+                        {children}
+                    </div>
                 </ClientProviders>
                 <div
                     className="dumbbell w-full flex fixed bottom-0 justify-around items-center select-none pointer-events-none">
-                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
-                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
-                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
-                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>
+                    <img src="/images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                    <img src="/images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                    <img src="/images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                    <img src="/images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>
                     {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
                     {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
                     {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
                     {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
                     {/*<img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>*/}
-                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>
-                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
-                    <img src="images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                    <img src="/images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px] hidden md:block"/>
+                    <img src="/images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
+                    <img src="/images/dumbbell.png" className="rotate-12 w-[20px] md:w-[50px]"/>
                 </div>
             </body>
         </html>
