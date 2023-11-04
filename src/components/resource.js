@@ -7,7 +7,7 @@ import { FiFolder } from "@react-icons/all-files/fi/FiFolder";
 import { FiBarChart } from "@react-icons/all-files/fi/FiBarChart";
 import { FiDribbble } from "@react-icons/all-files/fi/FiDribbble";
 
-function ResourceIcon({ icon: Icon }) {
+export function ResourceIcon({ icon: Icon }) {
     return (
         <div
             className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900/5 ring-1 ring-zinc-900/25 backdrop-blur-[2px] transition duration-300 group-hover:ring-zinc-900/25 dark:ring-white/15 dark:group-hover:ring-primary">
@@ -17,7 +17,7 @@ function ResourceIcon({ icon: Icon }) {
     );
 }
 
-function ResourcePattern({ mouseX, mouseY, ...gridProps }) {
+export function ResourcePattern({ mouseX, mouseY, ...gridProps }) {
     let maskImage = useMotionTemplate`radial-gradient(180px at ${mouseX}px ${mouseY}px, white, transparent)`;
     let style = { maskImage, WebkitMaskImage: maskImage };
     
@@ -31,7 +31,7 @@ function ResourcePattern({ mouseX, mouseY, ...gridProps }) {
     );
 }
 
-function Resource({ resource }) {
+export function Resource({ resource }) {
     let mouseX = useMotionValue(0);
     let mouseY = useMotionValue(0);
     
