@@ -1,21 +1,86 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import { GiStrong } from "@react-icons/all-files/gi/GiStrong";
 import { ResourceWithContent } from "@/components/resource-with-content";
 import { useRouter } from "next/navigation";
 import { BiPlus } from "react-icons/bi";
 import { Separator } from "@/components/ui/separator";
-import { useWorkoutsByCategory } from "@/lib/queries";
+import { useUserWorkouts, useWorkoutsByCategory } from "@/lib/queries";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { GiBodyBalance, GiLeg, GiRun } from "react-icons/gi";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { CreateWorkoutPopover } from "@/app/workout/create-workout-popover";
+import { atom, useAtom, useSetAtom } from "jotai";
+import { memo, useEffect, useMemo } from "react";
+
+// Holds the user's workouts after they are fetched
+const userWorkoutsAtom = atom([]);
 
 export default function Page() {
     const { data: session, status } = useSession();
     const router = useRouter();
+    
+    // Fetch the user's workouts
+    const { data, isLoading } = useUserWorkouts(session?.user?.email);
+    
+    // Store user workouts so other components can access it
+    const setUserWorkouts = useSetAtom(userWorkoutsAtom);
+    useEffect(() => {
+        if (!!data) {
+            setUserWorkouts(data);
+        }
+    }, [data]);
+    
+    if (status === "loading") return null;
+    
+    if (status === "unauthenticated") {
+        router.push("/login");
+    }
+    
+    return (
+        <div className="container max-w-6xl pt-16 space-y-4">
+            <div className="flex justify-between w-full">
+                <p className="text-3xl md:text-4xl font-bold">My Workouts</p>
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button size="lg">
+                            Create Workout
+                            <BiPlus className="ml-2 text-xl"/>
+                        </Button>
+                    </PopoverTrigger>
+                    <CreateWorkoutPopover/>
+                </Popover>
+            </div>
+            
+            {isLoading ? "Loading..." : <>
+                {data?.length && data.length > 0 ? <>
+                    <h4>Your workouts:</h4>
+                    <div className="space-y-2">
+                        {data?.map(uw => (
+                            <div key={uw.id}
+                                 className="relative rounded-2xl px-4 pt-4 pb-4 w-full bg-background border">
+                                {uw.name}
+                            </div>
+                        ))}
+                    </div>
+                </> : <div>
+                    You do not have any workouts.
+                </div>}
+            </>}
+            
+            <Separator/>
+            
+            <ExploreWorkouts/>
+        
+        </div>
+    );
+    
+}
+
+
+function ExploreWorkouts() {
     
     const workoutTypes = useMemo(() => [
         {
@@ -40,26 +105,8 @@ export default function Page() {
         },
     ], []);
     
-    if (status === "loading") return null;
-    
-    if (status === "unauthenticated") {
-        router.push("/login");
-    }
-    
     return (
-        <div className="container max-w-6xl pt-16 space-y-4">
-            <div className="flex justify-between w-full">
-                <p className="text-3xl md:text-4xl font-bold">My Workouts</p>
-                <Link href="/workout/create">
-                    <Button size="lg">
-                        Create Workout
-                        <BiPlus className="ml-2 text-xl"/>
-                    </Button>
-                </Link>
-            </div>
-            
-            <Separator/>
-            
+        <>
             <p className="text-2xl font-bold">Explore Workouts</p>
             <div
                 className="not-prose mt-4 grid grid-cols-1 gap-4 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-2">
@@ -73,14 +120,13 @@ export default function Page() {
                     </ResourceWithContent>
                 ))}
             </div>
-        
-        </div>
+        </>
     );
     
 }
 
 
-function WorkoutList({ category }) {
+export const WorkoutList = memo(({ category }) => {
     
     const { data } = useWorkoutsByCategory(category);
     
@@ -92,9 +138,12 @@ function WorkoutList({ category }) {
         </div>
     );
     
-}
+});
 
 function WorkoutListItem(workout) {
+    
+    // Fetched user workouts
+    const [userWorkouts] = useAtom(userWorkoutsAtom);
     
     return (
         <div key={workout.id}
@@ -107,15 +156,14 @@ function WorkoutListItem(workout) {
                 <MenubarMenu>
                     <MenubarTrigger><FiPlus className="text-xl"/></MenubarTrigger>
                     <MenubarContent>
-                        <MenubarItem>
-                            Workout 1
-                        </MenubarItem>
-                        <MenubarItem>
-                            Workout 2
-                        </MenubarItem>
-                        <MenubarItem>
-                            Workout 3
-                        </MenubarItem>
+                        {userWorkouts.length === 0 && "No workouts"}
+                        {userWorkouts?.map(uw => {
+                            return (
+                                <MenubarItem key={uw.id}>
+                                    {uw.name}
+                                </MenubarItem>
+                            );
+                        })}
                     </MenubarContent>
                 </MenubarMenu>
             </Menubar>
