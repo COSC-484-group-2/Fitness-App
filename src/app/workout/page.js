@@ -7,7 +7,7 @@ import { ResourceWithContent } from "@/components/resource-with-content";
 import { useRouter } from "next/navigation";
 import { BiPlus } from "react-icons/bi";
 import { Separator } from "@/components/ui/separator";
-import { useUserWorkouts, useWorkoutsByCategory } from "@/lib/queries";
+import { useInsertWorkoutItem, useUserWorkouts, useWorkoutsByCategory } from "@/lib/queries";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { GiBodyBalance, GiLeg, GiRun } from "react-icons/gi";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
@@ -61,7 +61,8 @@ export default function Page() {
                         {data?.map(uw => (
                             <div key={uw.id}
                                  className="relative rounded-2xl px-4 pt-4 pb-4 w-full bg-background border">
-                                {uw.name}
+                                <p className="text-xl font-bold">{uw.name}</p>
+                                <p>{uw.workout_items.map(workout_item => workout_item.workout.name).join(", ")}</p>
                             </div>
                         ))}
                     </div>
@@ -145,6 +146,15 @@ function WorkoutListItem(workout) {
     // Fetched user workouts
     const [userWorkouts] = useAtom(userWorkoutsAtom);
     
+    const { mutate } = useInsertWorkoutItem();
+    
+    function insertWorkoutItem(userWorkoutId) {
+        mutate({
+            workout_id: workout.id,
+            user_workout_id: userWorkoutId,
+        });
+    }
+    
     return (
         <div key={workout.id}
              className="flex rounded-md border px-4 py-3 w-full justify-between bg-background items-center">
@@ -156,10 +166,14 @@ function WorkoutListItem(workout) {
                 <MenubarMenu>
                     <MenubarTrigger><FiPlus className="text-xl"/></MenubarTrigger>
                     <MenubarContent>
-                        {userWorkouts.length === 0 && "No workouts"}
+                        {userWorkouts.length === 0 && <p className="p-2">No workouts</p>}
                         {userWorkouts?.map(uw => {
                             return (
-                                <MenubarItem key={uw.id}>
+                                <MenubarItem
+                                    className="cursor-pointer"
+                                    key={uw.id}
+                                    onClick={() => insertWorkoutItem(uw.id)}
+                                >
                                     {uw.name}
                                 </MenubarItem>
                             );
