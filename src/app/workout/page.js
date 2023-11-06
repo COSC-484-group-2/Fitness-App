@@ -36,7 +36,7 @@ function WorkoutTypePattern({ mouseX, mouseY, ...gridProps }) {
     );
 }
 
-function WorkoutTypes({ workoutType }) {
+export function WorkoutTypes({ workoutType }) {
     let mouseX = useMotionValue(0);
     let mouseY = useMotionValue(0);
     
@@ -67,7 +67,7 @@ function WorkoutTypes({ workoutType }) {
     );
 }
 
-function UpperBody() {
+export function UpperBody() {
 
     const [upperBodyWorkouts, setUpperBodyWorkouts] = useState(null);
 
@@ -97,7 +97,7 @@ function UpperBody() {
     
 }
 
-function LowerBody() {
+export function LowerBody() {
 
     const [lowerBodyWorkouts, setLowerBodyWorkouts] = useState(null);
 
@@ -127,7 +127,7 @@ function LowerBody() {
     
 }
 
-function FullBody() {
+export function FullBody() {
 
     const [fullBodyWorkouts, setFullBodyWorkouts] = useState(null);
 
@@ -157,7 +157,7 @@ function FullBody() {
     
 }
 
-function Cardio() {
+export function Cardio() {
 
     const [cardioWorkouts, setCardioWorkouts] = useState(null);
 

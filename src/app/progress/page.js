@@ -1,26 +1,15 @@
 "use client";
 import React from "react";
-import "./progress.css";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { FiBarChart } from "@react-icons/all-files/fi/FiBarChart";
-import { FiDribbble } from "@react-icons/all-files/fi/FiDribbble";
 import {Resource} from '@/components/resource';
 import { ImUnlocked } from 'react-icons/im';
 import { GiWeightScale } from 'react-icons/gi';
 import { GiNotebook } from 'react-icons/gi';
 
 
-
-
-
-
-
 export default function () {
-    
     const { data: session, status } = useSession();
 
-    
     const resources = [
         {
             href: "/progress/personal-records",
@@ -57,18 +46,6 @@ export default function () {
                         <Resource key={resource.href} resource={resource}/>
                     ))}
                 </div>
-                
-                {/* <section className="progress-board">
-                    <div className="metric">
-                        <Link href="/personal-records"><h1 className="metrics">Personal Records</h1></Link>
-                    </div>
-                    <div className="metric">
-                        <Link href="/caloric-intake"><h1 className="metrics">Caloric Intake</h1></Link>
-                    </div>
-                    <div className="metric">
-                        <Link href="/body-metrics"><h1 className="metrics">Body Metrics</h1></Link>
-                    </div>
-                </section> */}
             </div>
         );
     }
