@@ -20,12 +20,12 @@ export default function () {
                 minHeight: "53vh",
             }}>
                 <p className="text-3xl md:text-2xl font-bold">Developed By:</p>
-                <p className="text-base">Zaki Bonfoh</p>
-                <p className="text-base">Olasubomi Lawal</p>
-                <p className="text-base">Mathew Mesfin</p>
-                <p className="text-base">Joshua Ogunsola</p>
-                <p className="text-base">Jephtah Opoku</p>
-                <p className="text-base">Simon Yoseph</p><br></br>
+                <a href="https://github.com/zbonfo" className="text-base">Zaki Bonfoh</a>
+                <a href="https://github.com/subilawal" className="text-base">Olasubomi Lawal</a>
+                <a href="https://github.com/MATHEWMESFIN" className="text-base">Mathew Mesfin</a>
+                <a href="https://github.com/joguns1" className="text-base">Joshua Ogunsola</a>
+                <a href="https://github.com/JephtahOpoku" className="text-base">Jephtah Opoku</a>
+                <a href="https://github.com/SimonYoseph" className="text-base">Simon Yoseph</a><br></br>
                 <img style={{ height: 50, textAlign: "center" }} src="/icon.png" alt="MyFit Icon"></img>
             </div>
         </div>
