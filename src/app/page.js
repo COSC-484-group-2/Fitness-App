@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FiBarChart } from "@react-icons/all-files/fi/FiBarChart";
 import { FiDribbble } from "@react-icons/all-files/fi/FiDribbble";
 import { Resource } from "@/components/resource";
+import { SimpleGrid } from "@/components/simple-grid";
 
 export default function () {
     
@@ -59,12 +60,11 @@ function HomePageResources() {
             <div>
                 What would you like to do today?
             </div>
-            <div
-                className="not-prose mt-4 grid grid-cols-1 gap-4 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-2">
+            <SimpleGrid>
                 {resources.map((resource) => (
                     <Resource key={resource.href} resource={resource}/>
                 ))}
-            </div>
+            </SimpleGrid>
         </div>
     );
 }

@@ -14,6 +14,9 @@ import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { CreateWorkoutPopover } from "@/app/workout/create-workout-popover";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { memo, useEffect, useMemo } from "react";
+import { Spinner } from "@/components/spinner";
+import { ListItem } from "@/components/list-item";
+import { SimpleGrid } from "@/components/simple-grid";
 
 // Holds the user's workouts after they are fetched
 const userWorkoutsAtom = atom([]);
@@ -37,6 +40,7 @@ export default function Page() {
     
     if (status === "unauthenticated") {
         router.push("/login");
+        return null;
     }
     
     return (
@@ -54,22 +58,20 @@ export default function Page() {
                 </Popover>
             </div>
             
-            {isLoading ? "Loading..." : <>
-                {data?.length && data.length > 0 ? <>
-                    <h4>Your workouts:</h4>
-                    <div className="space-y-2">
-                        {data?.map(uw => (
-                            <div key={uw.id}
-                                 className="relative rounded-2xl px-4 pt-4 pb-4 w-full bg-background border">
-                                <p className="text-xl font-bold">{uw.name}</p>
-                                <p>{uw.workout_items.map(workout_item => workout_item.workout.name).join(", ")}</p>
-                            </div>
-                        ))}
-                    </div>
-                </> : <div>
-                    You do not have any workouts.
-                </div>}
-            </>}
+            {isLoading && <Spinner className="h-4 w-4 animate-spin"/>}
+            {(!isLoading && !!data?.length && data.length > 0) ? <>
+                <h4>Your workouts:</h4>
+                <div className="space-y-2">
+                    {data?.map(uw => (
+                        <ListItem key={uw.id}>
+                            <p className="text-xl font-bold">{uw.name}</p>
+                            <p>{uw.workout_items.map(workout_item => workout_item.workout.name).join(", ")}</p>
+                        </ListItem>
+                    ))}
+                </div>
+            </> : <div>
+                You do not have any workouts.
+            </div>}
             
             <Separator/>
             
@@ -86,22 +88,22 @@ function ExploreWorkouts() {
     const workoutTypes = useMemo(() => [
         {
             name: "Upper Body",
-            list: <WorkoutList category="upper-body"/>,
+            list: <WorkoutTypeList category="upper-body"/>,
             icon: GiStrong,
         },
         {
             name: "Lower Body",
-            list: <WorkoutList category="lower-body"/>,
+            list: <WorkoutTypeList category="lower-body"/>,
             icon: GiLeg,
         },
         {
             name: "Full Body",
-            list: <WorkoutList category="full-body"/>,
+            list: <WorkoutTypeList category="full-body"/>,
             icon: GiBodyBalance,
         },
         {
             name: "Cardio",
-            list: <WorkoutList category="cardio"/>,
+            list: <WorkoutTypeList category="cardio"/>,
             icon: GiRun,
         },
     ], []);
@@ -109,8 +111,7 @@ function ExploreWorkouts() {
     return (
         <>
             <p className="text-2xl font-bold">Explore Workouts</p>
-            <div
-                className="not-prose mt-4 grid grid-cols-1 gap-4 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-2">
+            <SimpleGrid>
                 {workoutTypes.map((workoutType) => (
                     <ResourceWithContent
                         key={workoutType.name}
@@ -120,14 +121,14 @@ function ExploreWorkouts() {
                         {workoutType.list}
                     </ResourceWithContent>
                 ))}
-            </div>
+            </SimpleGrid>
         </>
     );
     
 }
 
 
-export const WorkoutList = memo(({ category }) => {
+export const WorkoutTypeList = memo(({ category }) => {
     
     const { data } = useWorkoutsByCategory(category);
     
@@ -141,7 +142,7 @@ export const WorkoutList = memo(({ category }) => {
     
 });
 
-function WorkoutListItem(workout) {
+export function WorkoutListItem(workout) {
     
     // Fetched user workouts
     const [userWorkouts] = useAtom(userWorkoutsAtom);
@@ -156,13 +157,9 @@ function WorkoutListItem(workout) {
     }
     
     return (
-        <div key={workout.id}
-             className="flex rounded-md border px-4 py-3 w-full justify-between bg-background items-center">
-            <div className="">
-                <p className="text-lg font-semibold">{workout.name}</p>
-                <p className="text-muted-foreground">{workout.target}</p>
-            </div>
-            <Menubar>
+        <ListItem
+            key={workout.id}
+            rightSection={<Menubar>
                 <MenubarMenu>
                     <MenubarTrigger><FiPlus className="text-xl"/></MenubarTrigger>
                     <MenubarContent>
@@ -180,8 +177,13 @@ function WorkoutListItem(workout) {
                         })}
                     </MenubarContent>
                 </MenubarMenu>
-            </Menubar>
-        </div>
+            </Menubar>}
+        >
+            <div className="">
+                <p className="text-lg font-semibold">{workout.name}</p>
+                <p className="text-muted-foreground">{workout.target}</p>
+            </div>
+        </ListItem>
     );
     
 }

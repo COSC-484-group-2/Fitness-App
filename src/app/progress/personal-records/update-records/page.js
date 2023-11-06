@@ -1,8 +1,8 @@
 'use client';
-import React, { useState } from 'react';
-import '@/app/style/update-records.css';
+import React, { useState } from "react";
+import "@/app/style/update-records.css";
 
-export default function WorkoutType({ workoutType, togglePopup, onClick }) {
+export function WorkoutType({ workoutType, togglePopup, onClick }) {
   return (
       <div>
           <div className="workout-type" onClick={onClick}>

@@ -21,6 +21,7 @@ export default function RootLayout({ children }) {
                     "min-h-screen bg-background font-sans antialiased",
                     fontSans.variable,
                 )}
+                suppressHydrationWarning
             >
                 <div
                     className="fixed w-full h-full bg-no-repeat bg-cover bg-center -z-10 opacity-90 animate-mask-flare-loop"
