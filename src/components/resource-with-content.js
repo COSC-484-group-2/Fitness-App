@@ -54,10 +54,11 @@ export function ResourceWithContent({ children, ...resource }) {
             />
             <div className="relative rounded-2xl px-4 pt-4 pb-4 w-full">
                 {resource.icon && <ResourceWithContentIcon icon={resource.icon}/>}
-                <h3 className="mt-4 text-xl md:text-3xl font-semibold leading-7 text-zinc-900 dark:text-white">
+                {resource.name &&
+                    <h3 className="mt-4 text-xl md:text-3xl font-semibold leading-7 text-zinc-900 dark:text-white">
                     {resource.name}
-                </h3>
-                <Separator className="my-4"/>
+                    </h3>}
+                {(!!resource.icon || !!resource.name) && <Separator className="my-4"/>}
                 <div className="w-full max-h-64 overflow-y-auto resource-with-content-body">
                     {children}
                 </div>

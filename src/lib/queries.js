@@ -19,22 +19,12 @@ export function getCategoryName(cat) {
     }
 }
 
-export function useWorkouts() {
+export function useWorkoutItemsByCategory(category) {
     return useQuery({
-        queryKey: ["get-workouts"],
+        queryKey: ["get-workout-items-by-category", category],
         queryFn: async () => {
-            const res = await axios.get(dbEndpoint("workouts"));
-            return res.data?.workouts;
-        },
-    });
-}
-
-export function useWorkoutsByCategory(category) {
-    return useQuery({
-        queryKey: ["get-workouts-by-category", category],
-        queryFn: async () => {
-            const res = await axios.get(dbEndpoint(`workout/${category}`));
-            return res.data?.workouts;
+            const res = await axios.get(dbEndpoint(`workout_item/${category}`));
+            return res.data?.workout_items;
         },
     });
 }
@@ -43,7 +33,7 @@ export function useUserWorkouts(email) {
     return useQuery({
         queryKey: ["get-user-workouts", email],
         queryFn: async () => {
-            const res = await axios.get(dbEndpoint(`user-workouts/${encodeURI(email)}`));
+            const res = await axios.get(dbEndpoint(`user_workouts/${encodeURI(email)}`));
             return res.data?.user_workouts;
         },
         enabled: !!email,
@@ -69,12 +59,12 @@ export function useCreateUserWorkout() {
     });
 }
 
-export function useInsertWorkoutItem() {
+export function useInsertWorkoutItemIntoUserWorkout() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationKey: ["create-insert-workout-item"],
         mutationFn: async (variables) => {
-            const res = await axios.post(dbEndpoint(`workout_items`), {
+            const res = await axios.post(dbEndpoint(`user_workout_items`), {
                 object: {
                     ...variables,
                 },

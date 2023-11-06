@@ -57,7 +57,7 @@ export function CreateWorkoutPopover() {
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="My workout" {...field} />
+                                        <Input placeholder="e.g, Day 1, Week 1, ..." {...field} />
                                     </FormControl>
                                     <FormDescription>
                                         The name of your workout.
