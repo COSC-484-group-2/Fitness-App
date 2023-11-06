@@ -19,6 +19,14 @@ export function getCategoryName(cat) {
     }
 }
 
+/**
+ * @example JSON Object:
+ * [
+ *     { "name": "Bench Press", "category": "upper-body", "target": "Chest" },
+ *     { "name": "Bench Press", "category": "upper-body", "target": "Chest" },
+ *     ...
+ * ]
+ */
 export function useWorkoutItemsByCategory(category) {
     return useQuery({
         queryKey: ["get-workout-items-by-category", category],
@@ -29,6 +37,19 @@ export function useWorkoutItemsByCategory(category) {
     });
 }
 
+/**
+ * @example JSON Object:
+ * {
+ *   "id": "",
+ *   "name": "My Workout",
+ *   "user_id": "user@gmail.com",
+ *   "user_workout_items": [
+ *     { "workout_item": { "name": "Bench Press", "category": "upper-body", "target": "Chest" } },
+ *     { "workout_item": { "name": "Bench Press", "category": "upper-body", "target": "Chest" } },
+ *     ...
+ *   ]
+ *  }
+ */
 export function useUserWorkouts(email) {
     return useQuery({
         queryKey: ["get-user-workouts", email],
@@ -39,6 +60,21 @@ export function useUserWorkouts(email) {
         enabled: !!email,
     });
 }
+
+export function useUserPersonalRecords(email) {
+    return useQuery({
+        queryKey: ["get-user-records", email],
+        queryFn: async () => {
+            const res = await axios.get(dbEndpoint(`records/${encodeURI(email)}`));
+            return res.data?.records;
+        },
+        enabled: !!email,
+    });
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * Mutations
+ * -----------------------------------------------------------------------------------------------*/
 
 export function useCreateUserWorkout() {
     const queryClient = useQueryClient();
@@ -74,6 +110,25 @@ export function useInsertWorkoutItemIntoUserWorkout() {
         onSuccess: async () => {
             toast.success("Workout item added");
             await queryClient.refetchQueries({ queryKey: ["get-user-workouts"] });
+        },
+    });
+}
+
+export function useUpsertPersonalRecord() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["create-insert-workout-item"],
+        mutationFn: async (variables) => {
+            const res = await axios.post(dbEndpoint(`records`), {
+                object: {
+                    ...variables,
+                },
+            });
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Record saved");
+            await queryClient.refetchQueries({ queryKey: ["get-user-records"] });
         },
     });
 }

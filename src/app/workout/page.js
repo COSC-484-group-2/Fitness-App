@@ -69,7 +69,7 @@ export default function Page() {
                         <div className="space-y-2">
                             {userWorkouts?.map(uw => (
                                 <ListItem key={uw.id}>
-                                    <p className="text-xl font-bold">{uw.name}</p>
+                                    <p className="text-xl font-bold text-orange-200">{uw.name}</p>
                                     <p>{uw.user_workout_items.map(userWorkoutItem => userWorkoutItem.workout_item.name).join(", ")}</p>
                                 </ListItem>
                             ))}
@@ -162,7 +162,7 @@ const WorkoutTypeList = memo(({ category }) => {
             {workoutItems?.map((item) => (
                 <ListItem
                     key={item.id}
-                    rightSection={<Menubar>
+                    action={<Menubar>
                         <MenubarMenu>
                             <MenubarTrigger><FiPlus className="text-xl"/></MenubarTrigger>
                             <MenubarContent>

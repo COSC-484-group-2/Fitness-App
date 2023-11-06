@@ -32,7 +32,7 @@ export function ResourcePattern({ mouseX, mouseY }) {
     );
 }
 
-export function ResourceWithContent({ children, ...resource }) {
+export function ResourceWithContent({ children, scrolling = true, ...resource }) {
     let mouseX = useMotionValue(0);
     let mouseY = useMotionValue(0);
     
@@ -59,7 +59,12 @@ export function ResourceWithContent({ children, ...resource }) {
                     {resource.name}
                     </h3>}
                 {(!!resource.icon || !!resource.name) && <Separator className="my-4"/>}
-                <div className="w-full max-h-64 overflow-y-auto resource-with-content-body">
+                <div className={cn(
+                    "w-full resource-with-content-body",
+                    {
+                        "max-h-64 overflow-y-auto": scrolling,
+                    },
+                )}>
                     {children}
                 </div>
             </div>

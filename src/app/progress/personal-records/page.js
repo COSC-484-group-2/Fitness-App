@@ -4,42 +4,47 @@ import { GiStrong } from "@react-icons/all-files/gi/GiStrong";
 import { GiLeg } from "@react-icons/all-files/gi/GiLeg";
 import { GiBodyBalance } from "@react-icons/all-files/gi/GiBodyBalance";
 import { TfiStatsUp } from "react-icons/tfi";
-import React, { memo, useMemo, useState } from "react";
-import { WorkoutPopup } from "@/app/progress/personal-records/update-record-popover";
+import React, { memo, useMemo } from "react";
+import { getUnitFromWorkoutItem, UpdateRecordPopover } from "@/app/progress/personal-records/update-record-popover";
 import { GiRun } from "react-icons/gi";
 import { ResourceWithContent } from "@/components/resource-with-content";
 import { SimpleGrid } from "@/components/simple-grid";
 import { Separator } from "@/components/ui/separator";
 import { ListItem } from "@/components/list-item";
 import { PageSection } from "@/components/page-section";
-import { useWorkoutItemsByCategory } from "@/lib/queries";
-import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
-import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
+import { useUserPersonalRecords, useWorkoutItemsByCategory } from "@/lib/queries";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { BiPlus } from "react-icons/bi";
+import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function CurrentStats() {
-    
-    const currStats = [
-        {
-            id: "1",
-            workout_item: {
-                name: "Burpees",
-                target: "...",
-            },
-        },
-    ];
+    const { data: session } = useSession();
+    const { data: records } = useUserPersonalRecords(session?.user?.email);
     
     return (
-        <div>
-            {currStats && currStats.map((item, id) => (
-                <ListItem key={id}>
+        <div className="space-y-2">
+            {records?.length && records.map((record) => (
+                <ListItem
+                    key={record.id}
+                    action={
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <div
+                                    className="text-green-200 font-bold py-2 px-4 rounded-2xl border animate-mask-flare-loop cursor-pointer">
+                                    {record.value} {getUnitFromWorkoutItem(record.workout_item)}
+                                </div>
+                            </PopoverTrigger>
+                            <UpdateRecordPopover workoutItem={record.workout_item} defaultValue={record.value}/>
+                        </Popover>
+                    }
+                >
                     <div className="a-workout">
-                        <p>{item.workout_item.name}</p>
-                        <p className="a-workout-target">{item.workout_item.target}</p>
+                        <p className="text-lg font-semibold">{record.workout_item.name}</p>
                     </div>
-                    {/* <FiPlus className="icon"/>  instead of plus button, this will hold the numerical values for user's current stats */}
                 </ListItem>
-            ))
-            }
+            ))}
         </div>
     );
     
@@ -47,42 +52,32 @@ export function CurrentStats() {
 
 
 export default function Page() {
-    const [isPopupVisible, setPopupVisibility] = useState(false);
-    
-    const togglePopup = () => {
-        setPopupVisibility(!isPopupVisible);
-    };
     
     return (
-        <PageSection title="Check and Update your Personal Records">
-            <div className="space-y-4">
-                <Separator/>
-                <ResourceWithContent
-                    name={"Current Statistics"}
-                    icon={TfiStatsUp}
-                >
-                    <CurrentStats/>
-                </ResourceWithContent>
+        <div className="space-y-8">
+            <SimpleGrid>
+                <PageSection title="Check and update your personal records">
+                    <div className="space-y-4">
+                        <Separator/>
+                        <ResourceWithContent
+                            name={"Current Statistics"}
+                            icon={TfiStatsUp}
+                        >
+                            <CurrentStats/>
+                        </ResourceWithContent>
+                    </div>
+                </PageSection>
                 
-                <div className="update-workout-dashboard__section">
-                    <p className="text-2xl font-bold">What Records did we Break Today?</p>
-                    <SimpleGrid
-                        onClick={togglePopup}>
-                        {isPopupVisible && (
-                            <WorkoutPopup
-                                workoutName="UpperBody"
-                                onClose={togglePopup}
-                                onValueSubmit={(workoutName, value) => {
-                                    // should update database when new value is submitted
-                                    console.log(`Workout: ${workoutName}, Value: ${value}`);
-                                }}
-                            />
-                        )}
-                    </SimpleGrid>
-                    <WorkoutTypeLists/>
-                </div>
-            </div>
-        </PageSection>
+                <PageSection title="What record did you break today?">
+                    <div className="space-y-4">
+                        <Separator/>
+                        <ScrollArea className="h-[60vh] w-full pr-4">
+                            <WorkoutTypeLists/>
+                        </ScrollArea>
+                    </div>
+                </PageSection>
+            </SimpleGrid>
+        </div>
     );
     
 }
@@ -114,17 +109,18 @@ function WorkoutTypeLists() {
     ], []);
     
     return (
-        <SimpleGrid>
+        <div className="space-y-4">
             {workoutTypes.map((workoutType) => (
                 <ResourceWithContent
                     key={workoutType.name}
                     name={workoutType.name}
-                    icon={workoutType.icon}
+                    scrolling={false}
+                    // icon={workoutType.icon}
                 >
                     {workoutType.list}
                 </ResourceWithContent>
             ))}
-        </SimpleGrid>
+        </div>
     );
     
 }
@@ -139,18 +135,14 @@ const WorkoutTypeList = memo(({ category }) => {
             {workoutItems?.map((item) => (
                 <ListItem
                     key={item.id}
-                    rightSection={<Menubar>
-                        <MenubarMenu>
-                            <MenubarTrigger><FiPlus className="text-xl"/></MenubarTrigger>
-                            <MenubarContent>
-                                <MenubarItem
-                                    className="cursor-pointer"
-                                >
-                                    Add record
-                                </MenubarItem>
-                            </MenubarContent>
-                        </MenubarMenu>
-                    </Menubar>}
+                    action={<Popover>
+                        <PopoverTrigger asChild>
+                            <Button variant="outline" size="icon">
+                                <BiPlus className="text-xl"/>
+                            </Button>
+                        </PopoverTrigger>
+                        <UpdateRecordPopover workoutItem={item}/>
+                    </Popover>}
                 >
                     <div className="">
                         <p className="text-lg font-semibold">{item.name}</p>

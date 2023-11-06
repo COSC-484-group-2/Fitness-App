@@ -66,7 +66,7 @@ export function CreateWorkoutPopover() {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Create</Button>
+                        <Button type="submit" disabled={isPending}>Create</Button>
                     </form>
                 </Form>
             
