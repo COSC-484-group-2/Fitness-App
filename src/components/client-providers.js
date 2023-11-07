@@ -4,16 +4,24 @@ import { Provider as JotaiProvider } from "jotai";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Spinner } from "@/components/spinner";
 import { MainNav } from "@/components/main-nav";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
+
+const queryClient = new QueryClient();
 
 export function ClientProviders({ children }) {
     return (
         <SessionProvider>
             <JotaiProvider>
-                <NextThemesProvider defaultTheme="dark" forcedTheme="dark" attribute="class" disableTransitionOnChange>
-                    <Wrapper>
-                        {children}
-                    </Wrapper>
-                </NextThemesProvider>
+                <QueryClientProvider client={queryClient}>
+                    <NextThemesProvider defaultTheme="dark" forcedTheme="dark" attribute="class"
+                                        disableTransitionOnChange>
+                        <Wrapper>
+                            {children}
+                        </Wrapper>
+                        <Toaster/>
+                    </NextThemesProvider>
+                </QueryClientProvider>
             </JotaiProvider>
         </SessionProvider>
     );

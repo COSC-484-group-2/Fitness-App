@@ -1,34 +1,51 @@
 "use client";
 import React from "react";
-import "./progress.css";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { Resource } from "@/components/resource";
+import { ImUnlocked } from "react-icons/im";
+import { GiNotebook, GiWeightScale } from "react-icons/gi";
+import { SimpleGrid } from "@/components/simple-grid";
+import { PageSection } from "@/components/page-section";
+
 
 export default function () {
-    
     const { data: session, status } = useSession();
+    
+    const resources = [
+        {
+            href: "/progress/personal-records",
+            name: "Personal Records",
+            description: "Keep track of all your PRs",
+            icon: ImUnlocked,
+        },
+        {
+            href: "/progress/caloric-intake",
+            name: "Caloric Intake",
+            description: "Track what you eat and your calories",
+            icon: GiNotebook,
+        },
+        
+        {
+            href: "/progress/records",
+            name: "Body Metrics",
+            description:
+                "Update and keep track of your height, weight, BMI, and more",
+            icon: GiWeightScale,
+        },
+    ];
     
     if (status === "loading") return null;
     
     if (status === "authenticated") {
         
         return (
-            <div className="container max-w-6xl pt-16 space-y-4">
-                <p className="text-3xl md:text-4xl font-bold">Track your progress</p>
-                
-                <section className="progress-board">
-                    <div className="metric">
-                        <Link href="/personal-records"><h1 className="metrics">Personal Records</h1></Link>
-                    </div>
-                    <div className="metric">
-                        <Link href="/caloric-intake"><h1 className="metrics">Caloric Intake</h1></Link>
-                    </div>
-                    <div className="metric">
-                        <Link href="/progress/records"><h1 className="metrics">Body Metrics</h1></Link>
-                    </div>
-                </section>
-            </div>
+            <PageSection title="Track your progress">
+                <SimpleGrid>
+                    {resources.map((resource) => (
+                        <Resource key={resource.href} resource={resource}/>
+                    ))}
+                </SimpleGrid>
+            </PageSection>
         );
     }
-    
 }

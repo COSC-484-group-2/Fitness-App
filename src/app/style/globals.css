@@ -32,6 +32,7 @@
         --foreground: 60 9.1% 97.8%;
         /*--card: 20 14.3% 4.1%;*/
         --card: 24 9.8% 8%;
+        --card-light: 24 9.8% 6%;
         --card-foreground: 60 9.1% 97.8%;
         --popover: 20 14.3% 4.1%;
         --popover-foreground: 60 9.1% 97.8%;
@@ -107,6 +108,7 @@
 .dumbbell img {
     animation: dumbbell 15s linear infinite;
     opacity: 0;
+    z-index: -1;
 }
 
 .dumbbell img:nth-child(1) {
@@ -182,3 +184,11 @@
     opacity: 0.3;
 }
 
+.resource-with-content-body::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.resource-with-content-body::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 0.25rem;
+}
