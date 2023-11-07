@@ -21,11 +21,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function CurrentStats() {
     const { data: session } = useSession();
-    const { data: records } = useUserPersonalRecords(session?.user?.email);
+    const { data: records, isLoading } = useUserPersonalRecords(session?.user?.email);
     
     return (
         <div className="space-y-2">
-            {records?.length && records.map((record) => (
+            {(!!records?.length) && records.map((record) => (
                 <ListItem
                     key={record.id}
                     action={
@@ -45,6 +45,7 @@ export function CurrentStats() {
                     </div>
                 </ListItem>
             ))}
+            {(!isLoading && !records?.length) && <p>No personal records</p>}
         </div>
     );
     

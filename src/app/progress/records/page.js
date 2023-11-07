@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
+import { PageSection } from "@/components/page-section";
 
 export default function BodyMeasurementsForm() {
     const { data: session, status } = useSession();
@@ -37,7 +38,7 @@ export default function BodyMeasurementsForm() {
     if (status === "loading") return null;
 
     return (
-        <div>
+        <PageSection title="Body measurements">
             <form onSubmit={handleSubmit}>
                 <label>
                     Name:
@@ -136,6 +137,6 @@ export default function BodyMeasurementsForm() {
                     <li><strong>Hip Circumference (inches):</strong> {bodyMeasurements.hipCircumference}</li>
                 </ul>
             </div>
-        </div>
+        </PageSection>
     );
 }

@@ -26,7 +26,7 @@ export default function () {
         },
         
         {
-            href: "/progress/body-metrics",
+            href: "/progress/records",
             name: "Body Metrics",
             description:
                 "Update and keep track of your height, weight, BMI, and more",
