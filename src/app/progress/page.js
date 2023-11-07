@@ -24,7 +24,7 @@ export default function () {
                         <Link href="/caloric-intake"><h1 className="metrics">Caloric Intake</h1></Link>
                     </div>
                     <div className="metric">
-                        <Link href="/body-metrics"><h1 className="metrics">Body Metrics</h1></Link>
+                        <Link href="/progress/records"><h1 className="metrics">Body Metrics</h1></Link>
                     </div>
                 </section>
             </div>
