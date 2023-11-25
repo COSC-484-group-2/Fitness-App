@@ -95,6 +95,26 @@ export function useCreateUserWorkout() {
     });
 }
 
+export function useDeleteUserWorkout() {
+    const queryClient = useQueryClient();
+    const { mutate, isPending } = useMutation({
+        mutationKey: ["delete-user-workout"],
+        mutationFn: async (variables) => {
+            const res = await axios.delete(dbEndpoint(`user_workouts/${variables.id}`));
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Workout deleted");
+            await queryClient.refetchQueries({ queryKey: ["get-user-workouts"] });
+        },
+    });
+    
+    return {
+        deleteUserWorkout: (id) => mutate({ id }),
+        isPending,
+    };
+}
+
 export function useInsertWorkoutItemIntoUserWorkout() {
     const queryClient = useQueryClient();
     return useMutation({
@@ -117,7 +137,7 @@ export function useInsertWorkoutItemIntoUserWorkout() {
 export function useUpsertPersonalRecord() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationKey: ["create-insert-workout-item"],
+        mutationKey: ["upsert-personal-record"],
         mutationFn: async (variables) => {
             const res = await axios.post(dbEndpoint(`records`), {
                 object: {
@@ -131,4 +151,24 @@ export function useUpsertPersonalRecord() {
             await queryClient.refetchQueries({ queryKey: ["get-user-records"] });
         },
     });
+}
+
+export function useDeletePersonalRecord() {
+    const queryClient = useQueryClient();
+    const { mutate, isPending } = useMutation({
+        mutationKey: ["delete-personal-record"],
+        mutationFn: async (variables) => {
+            const res = await axios.delete(dbEndpoint(`records/${variables.userId}/${variables.workoutItemId}`));
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Record deleted");
+            await queryClient.refetchQueries({ queryKey: ["get-user-records"] });
+        },
+    });
+    
+    return {
+        deletePersonalRecord: (userId, workoutItemId) => mutate({ userId, workoutItemId }),
+        isPending,
+    };
 }
