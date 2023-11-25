@@ -32,7 +32,7 @@ export function ResourcePattern({ mouseX, mouseY }) {
     );
 }
 
-export function ResourceWithContent({ children, scrolling = true, ...resource }) {
+export function ResourceWithContent({ children, scrolling = true, bodyClassName, ...resource }) {
     let mouseX = useMotionValue(0);
     let mouseY = useMotionValue(0);
     
@@ -52,7 +52,7 @@ export function ResourceWithContent({ children, scrolling = true, ...resource })
             <div
                 className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20"
             />
-            <div className="relative rounded-2xl px-4 pt-4 pb-4 w-full">
+            <div className={cn("relative rounded-2xl p-4 w-full", bodyClassName)}>
                 {resource.icon && <ResourceWithContentIcon icon={resource.icon}/>}
                 {resource.name &&
                     <h3 className="mt-4 text-xl md:text-3xl font-semibold leading-7 text-zinc-900 dark:text-white">

@@ -72,6 +72,18 @@ export function useUserPersonalRecords(email) {
     });
 }
 
+
+export function useBodyMeasurements(email) {
+    return useQuery({
+        queryKey: ["get-body-measurements", email],
+        queryFn: async () => {
+            const res = await axios.get(dbEndpoint(`body_measurement/${encodeURI(email)}`));
+            return res.data?.body_measurements;
+        },
+        enabled: !!email,
+    });
+}
+
 /* -------------------------------------------------------------------------------------------------
  * Mutations
  * -----------------------------------------------------------------------------------------------*/
@@ -171,4 +183,39 @@ export function useDeletePersonalRecord() {
         deletePersonalRecord: (userId, workoutItemId) => mutate({ userId, workoutItemId }),
         isPending,
     };
+}
+
+export function useInsertBodyMeasurements({ onSuccess }) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["create-body-measurements"],
+        mutationFn: async (variables) => {
+            const res = await axios.post(dbEndpoint(`body_measurements`), {
+                object: {
+                    ...variables,
+                },
+            });
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Added");
+            await queryClient.refetchQueries({ queryKey: ["get-body-measurements"] });
+            onSuccess();
+        },
+    });
+}
+
+export function useDeleteBodyMeasurements() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["delete-body-measurements"],
+        mutationFn: async (variables) => {
+            const res = await axios.delete(dbEndpoint(`body_measurements/${variables.id}`));
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Removed");
+            await queryClient.refetchQueries({ queryKey: ["get-body-measurements"] });
+        },
+    });
 }
