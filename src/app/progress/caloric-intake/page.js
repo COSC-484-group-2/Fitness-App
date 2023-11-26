@@ -1,32 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PageSection } from "@/components/page-section";
 
 function CaloricIntakeTracker() {
     const [food, setFood] = useState("");
     const [calories, setCalories] = useState(0);
-    const [foodList, setFoodList] = useState([]);
+    const [foodList, setFoodList] = useState({});
     const [totalCalories, setTotalCalories] = useState(0);
-    const [currentDay, setCurrentDay] = useState("");
-    
-    const getCurrentDay = () => {
-        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        const currentDate = new Date();
-        const dayIndex = currentDate.getDay();
-        setCurrentDay(daysOfWeek[dayIndex]);
-    };
-    
+
+    useEffect(() => {
+        const storedFoodList = JSON.parse(localStorage.getItem("foodList")) || {};
+        setFoodList(storedFoodList);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("foodList", JSON.stringify(foodList));
+    }, [foodList]);
+
     const addFood = () => {
         if (food && calories > 0) {
+            const currentDate = new Date().toLocaleDateString();
             const newItem = { food, calories };
-            setFoodList([...foodList, newItem]);
+            const updatedFoodList = { ...foodList };
+
+            if (!updatedFoodList[currentDate]) {
+                updatedFoodList[currentDate] = [newItem];
+            } else {
+                updatedFoodList[currentDate].push(newItem);
+            }
+
+            setFoodList(updatedFoodList);
             setTotalCalories(totalCalories + calories);
             setFood("");
             setCalories(0);
-            getCurrentDay();
         }
     };
-    
+
     return (
         <PageSection title="Caloric Intake Tracker">
             <div>
@@ -47,14 +56,19 @@ function CaloricIntakeTracker() {
             </div>
             <button onClick={addFood}>Add Food</button>
             <div>
-                <h2>Food List for {currentDay}</h2>
-                <ul>
-                    {foodList.map((item, index) => (
-                        <li key={index}>
-                            {item.food}: {item.calories} calories
-                        </li>
-                    ))}
-                </ul>
+                <h2>Food List</h2>
+                {Object.keys(foodList).map((day) => (
+                    <div key={day}>
+                        <h3>{day}</h3>
+                        <ul>
+                            {foodList[day].map((item, index) => (
+                                <li key={index}>
+                                    {item.food}: {item.calories} calories
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
                 <p>Total Calories: {totalCalories}</p>
             </div>
         </PageSection>
