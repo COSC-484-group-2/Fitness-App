@@ -97,6 +97,17 @@ export function useBodyMeasurements(email) {
     });
 }
 
+export function useCaloricIntakes(email) {
+    return useQuery({
+        queryKey: ["get-caloric-intakes", email],
+        queryFn: async () => {
+            const res = await axios.get(dbEndpoint(`caloric_intake/${encodeURI(email)}`));
+            return res.data?.caloric_intakes;
+        },
+        enabled: !!email,
+    });
+}
+
 /* -------------------------------------------------------------------------------------------------
  * Mutations
  * -----------------------------------------------------------------------------------------------*/
@@ -229,6 +240,42 @@ export function useDeleteBodyMeasurements() {
         onSuccess: async () => {
             toast.success("Removed");
             await queryClient.refetchQueries({ queryKey: ["get-body-measurements"] });
+        },
+    });
+}
+
+export function useInsertCaloricIntake({ onSuccess }) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["insert-caloric-intake"],
+        mutationFn: async (variables) => {
+            const res = await axios.post(dbEndpoint(`caloric_intakes`), {
+                object: {
+                    ...variables,
+                },
+            });
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Added");
+            await queryClient.refetchQueries({ queryKey: ["get-caloric-intakes"] });
+            onSuccess();
+        },
+    });
+}
+
+
+export function useDeleteCaloricIntake() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["delete-caloric-intake"],
+        mutationFn: async (variables) => {
+            const res = await axios.delete(dbEndpoint(`caloric_intakes/${variables.id}`));
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Removed");
+            await queryClient.refetchQueries({ queryKey: ["get-caloric-intakes"] });
         },
     });
 }

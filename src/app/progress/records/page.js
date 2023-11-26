@@ -39,7 +39,9 @@ export default function Page() {
         <PageSection title="Body measurements">
             <div className="space-y-8">
                 
-                <ResourceWithContent>
+                <ResourceWithContent
+                    contentClassName="max-h-[21rem]"
+                >
                     {/*Loading*/}
                     {isLoading && <Spinner className="h-4 w-4 animate-spin"/>}
                     

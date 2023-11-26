@@ -37,6 +37,7 @@ export function ResourceWithContent({
                                         scrolling = true,
                                         bodyClassName,
                                         nameClassName,
+                                        contentClassName,
                                         className,
                                         onClick,
                                         ...resource
@@ -73,6 +74,7 @@ export function ResourceWithContent({
                     {
                         "max-h-64 overflow-y-auto": scrolling,
                     },
+                    contentClassName,
                 )}>
                     {children}
                 </div>
