@@ -6,6 +6,7 @@ import { FiBarChart } from "@react-icons/all-files/fi/FiBarChart";
 import { FiDribbble } from "@react-icons/all-files/fi/FiDribbble";
 import { Resource } from "@/components/resource";
 import { SimpleGrid } from "@/components/simple-grid";
+import { HomeFeed } from "@/app/feed/home-feed";
 
 export default function () {
     
@@ -32,6 +33,7 @@ export default function () {
                 <p className="text-3xl md:text-4xl font-bold">Welcome back, <span
                     className="text-primary">{firstName}</span></p>
                 <HomePageResources/>
+                <HomeFeed/>
             </>
         );
     }

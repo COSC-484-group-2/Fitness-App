@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useCallback } from "react";
 
 // ListItem can be used to display elements of a list
-export function ListItem({ children, action, href }) {
+export function ListItem({ children, className, action, href, ...rest }) {
     
     const Content = useCallback(() => (
         <div className={cn(
@@ -11,11 +11,14 @@ export function ListItem({ children, action, href }) {
             {
                 "flex justify-between items-center": !!action,
             },
-        )}>
+            className,
+        )}
+             {...rest}
+        >
             <div>{children}</div>
             {action}
         </div>
-    ), [children, action]);
+    ), [children, className, action, rest]);
     
     if (!!href) {
         return <Link href={href}><Content/></Link>;

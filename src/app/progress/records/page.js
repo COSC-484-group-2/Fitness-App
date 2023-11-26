@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { PageSection } from "@/components/page-section";
 import { z } from "zod";
@@ -142,14 +142,14 @@ const formSchema = z.object({
 
 export function BodyMeasurementsForm() {
     
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {},
     });
     
-    const { mutate, isPending } = useInsertBodyMeasurements({
+    const { mutate, isPending, status } = useInsertBodyMeasurements({
         onSuccess: () => {
             form.reset();
         },
@@ -163,6 +163,94 @@ export function BodyMeasurementsForm() {
             });
         }
     }
+    
+    const Inputs = useCallback(() => {
+        return <>
+            <div className="flex gap-4 w-full">
+                <FormField
+                    control={form.control}
+                    name="weight_pounds"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Weight (lbs):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="weight_ounces"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Weight (oz):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+            </div>
+            
+            <div className="flex w-full gap-4">
+                <FormField
+                    control={form.control}
+                    name="height_feet"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Height (feet):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="height_inches"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Height (inches):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="waist_circumference"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Waist Circumference (inches):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="hip_circumference"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Hip Circumference (inches):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+            </div>
+        </>;
+    }, [status === "success"]);
     
     return (
         <ResourceWithContent scrolling={false} bodyClassName="p-0">
@@ -216,89 +304,7 @@ export function BodyMeasurementsForm() {
                                         </FormItem>
                                     )}
                                 />
-                                <div className="flex gap-4 w-full">
-                                    <FormField
-                                        control={form.control}
-                                        name="weight_pounds"
-                                        render={({ field }) => (
-                                            <FormItem className="w-full">
-                                                <FormLabel>Weight (lbs):</FormLabel>
-                                                <FormControl>
-                                                    <Input type="number" {...field} />
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="weight_ounces"
-                                        render={({ field }) => (
-                                            <FormItem className="w-full">
-                                                <FormLabel>Weight (oz):</FormLabel>
-                                                <FormControl>
-                                                    <Input type="number" {...field} />
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                                
-                                <div className="flex w-full gap-4">
-                                    <FormField
-                                        control={form.control}
-                                        name="height_feet"
-                                        render={({ field }) => (
-                                            <FormItem className="w-full">
-                                                <FormLabel>Height (feet):</FormLabel>
-                                                <FormControl>
-                                                    <Input type="number" {...field} />
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="height_inches"
-                                        render={({ field }) => (
-                                            <FormItem className="w-full">
-                                                <FormLabel>Height (inches):</FormLabel>
-                                                <FormControl>
-                                                    <Input type="number" {...field} />
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="waist_circumference"
-                                        render={({ field }) => (
-                                            <FormItem className="w-full">
-                                                <FormLabel>Waist Circumference (inches):</FormLabel>
-                                                <FormControl>
-                                                    <Input type="number" {...field} />
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="hip_circumference"
-                                        render={({ field }) => (
-                                            <FormItem className="w-full">
-                                                <FormLabel>Hip Circumference (inches):</FormLabel>
-                                                <FormControl>
-                                                    <Input type="number" {...field} />
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
+                                <Inputs/>
                                 <Button type="submit" className="capture-button" disabled={isPending}>
                                     Capture Body Measurements
                                 </Button>
