@@ -11,7 +11,7 @@ function ResourceWithContentIcon({ icon: Icon }) {
             )}>
             <Icon
                 className={cn(
-                    "h-8 w-8 fill-zinc-700/10 stroke-zinc-700 transition-colors duration-300 group-hover:stroke-zinc-900 group-hover:fill-primary",
+                    "h-8 w-8 fill-gray-400 dark:fill-zinc-700/10 stroke-zinc-700 transition-colors duration-300 group-hover:stroke-zinc-900 group-hover:fill-primary",
                     "dark:fill-white/30 dark:stroke-zinc-400 dark:group-hover:fill-primary-300/10 dark:group-hover:stroke-primary",
                 )}/>
         </div>

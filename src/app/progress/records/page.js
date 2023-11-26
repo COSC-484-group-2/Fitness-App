@@ -48,7 +48,7 @@ export default function Page() {
                         <div className="space-y-2">
                             {measurements?.map(item => (
                                 <ListItem key={item.id}>
-                                    <p className="text-base font-bold text-orange-200 mb-4 flex gap-2 items-center">
+                                    <p className="text-base font-bold text-orange-600 dark:text-orange-200 mb-4 flex gap-2 items-center">
                                         <BiCalendarAlt/>
                                         <span>{format(new Date(item.date), "PPP")}</span>
                                     </p>
@@ -141,6 +141,8 @@ const formSchema = z.object({
 });
 
 export function BodyMeasurementsForm() {
+    
+    const { data: session, status } = useSession();
     
     const form = useForm({
         resolver: zodResolver(formSchema),

@@ -11,7 +11,7 @@ export function ResourceIcon({ icon: Icon }) {
             )}>
             <Icon
                 className={cn(
-                    "h-8 w-8 fill-slate-700/10 stroke-slate-700 transition-colors duration-300 group-hover:stroke-slate-900 group-hover:fill-primary",
+                    "h-8 w-8 fill-gray-400 dark:fill-slate-700/10 stroke-slate-700 transition-colors duration-300 group-hover:stroke-slate-900 group-hover:fill-primary",
                     "dark:fill-white/50 dark:stroke-slate-400 dark:group-hover:fill-primary-300/10 dark:group-hover:stroke-primary",
                 )}/>
         </div>
