@@ -79,6 +79,14 @@ export default function Page() {
                                                 <p>{`${item.hip_circumference} inches`}</p>
                                             </div>
                                         </div>
+                                        
+                                        <div>
+                                            <p className="font-semibold">BMI:</p>
+                                            {/* Calculate BMI using the item data */}
+                                            {item.weight_pounds && item.height_feet && item.height_inches &&
+                                                <p>{calculateBMI(parseFloat(item.weight_pounds), parseFloat(item.height_feet), parseFloat(item.height_inches)).toFixed(1)}</p>
+                                            }
+                                        </div>
                                     </div>
                                     
                                     <div className="absolute top-2 right-2">
@@ -118,6 +126,13 @@ export default function Page() {
         </PageSection>
     );
     
+}
+
+function calculateBMI(weightPounds, heightFeet, heightInches) {
+    const weightKg = weightPounds * 0.453592; // Convert pounds to kilograms
+    const heightMeters = ((heightFeet * 12) + heightInches) * 0.0254; // Convert feet and inches to meters
+    const bmi = weightKg / (heightMeters * heightMeters);
+    return bmi;
 }
 
 const formSchema = z.object({
