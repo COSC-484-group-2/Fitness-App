@@ -14,7 +14,7 @@ export function ClientProviders({ children }) {
         <SessionProvider>
             <JotaiProvider>
                 <QueryClientProvider client={queryClient}>
-                    <NextThemesProvider defaultTheme="dark" forcedTheme="dark" attribute="class"
+                    <NextThemesProvider defaultTheme="dark" attribute="class"
                                         disableTransitionOnChange>
                         <Wrapper>
                             {children}

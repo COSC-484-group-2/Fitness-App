@@ -32,7 +32,7 @@ export function CurrentStats() {
                         <Popover>
                             <PopoverTrigger asChild>
                                 <div
-                                    className="text-green-200 font-bold py-2 px-4 rounded-2xl border animate-mask-flare-loop cursor-pointer">
+                                    className="text-green-900 dark:text-green-200 font-bold py-2 px-4 rounded-2xl border animate-mask-flare-loop cursor-pointer">
                                     {record.value} {getUnitFromWorkoutItem(record.workout_item)}
                                 </div>
                             </PopoverTrigger>

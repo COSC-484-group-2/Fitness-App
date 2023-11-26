@@ -25,7 +25,7 @@ export function ResourcePattern({ mouseX, mouseY }) {
     return (
         <div className="pointer-events-none">
             <motion.div
-                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#ea580c] to-[#ea580c] opacity-0 transition duration-300 group-hover:opacity-100 dark:group-hover:opacity-10 dark:from-[#ea580c] dark:to-[#e3956d]"
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#ffede3] to-[#ffede3] opacity-0 transition duration-300 group-hover:opacity-100 dark:group-hover:opacity-10 dark:from-[#ea580c] dark:to-[#e3956d]"
                 style={style}
             />
         </div>
@@ -50,7 +50,7 @@ export function ResourceWithContent({ children, scrolling = true, bodyClassName,
         >
             <ResourcePattern mouseX={mouseX} mouseY={mouseY}/>
             <div
-                className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20"
+                className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-300 group-hover:ring-slate-900/10 dark:ring-white/10 dark:group-hover:ring-white/20"
             />
             <div className={cn("relative rounded-2xl p-4 w-full", bodyClassName)}>
                 {resource.icon && <ResourceWithContentIcon icon={resource.icon}/>}

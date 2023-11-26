@@ -24,13 +24,13 @@ export default function RootLayout({ children }) {
                 suppressHydrationWarning
             >
                 <div
-                    className="fixed w-full h-full bg-no-repeat bg-cover bg-center -z-10 opacity-90 animate-mask-flare-loop"
+                    className="fixed w-full h-full bg-no-repeat bg-cover bg-center -z-10 opacity-100 dark:opacity-90 animate-mask-flare-loop"
                     style={{
                         backgroundImage: "url(/images/effect.png)",
                     }}
                 />
                 <svg
-                    className="absolute opacity-20 inset-0 -z-10 h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_right,black,transparent)]"
+                    className="absolute opacity-0  dark:opacity-20 inset-0 -z-10 h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_right,black,transparent)]"
                     aria-hidden="true"
                 >
                     <defs>
