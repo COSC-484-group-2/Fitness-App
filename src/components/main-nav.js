@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { UserNav } from "@/components/user-nav";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export function MainNav({ className, ...props }) {
     
@@ -12,7 +13,8 @@ export function MainNav({ className, ...props }) {
     const pathname = usePathname();
     
     return (
-        <div className="fixed top-0 w-full flex h-16 items-center px-4 border-b border-b-accent backdrop-blur-xl z-10">
+        <div
+            className="fixed top-0 w-full flex h-16 items-center px-4 border-b border-b-accent bg-white dark:bg-transparent backdrop-blur-xl z-10">
             <Link className="text-3xl font-bold hover:animate-mask-flare-loop" href="/">
                 MyFIT
             </Link>
@@ -37,6 +39,7 @@ export function MainNav({ className, ...props }) {
                         Login
                     </NavLink>}
                 </nav>
+                <ModeToggle/>
                 <UserNav/>
             </div>
         </div>

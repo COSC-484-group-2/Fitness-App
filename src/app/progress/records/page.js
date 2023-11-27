@@ -1,142 +1,345 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { PageSection } from "@/components/page-section";
+import { z } from "zod";
+import { useBodyMeasurements, useDeleteBodyMeasurements, useInsertBodyMeasurements } from "@/lib/queries";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ResourceWithContent } from "@/components/resource-with-content";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Separator } from "@/components/ui/separator";
+import { Spinner } from "@/components/spinner";
+import { ListItem } from "@/components/list-item";
+import { BiCalendarAlt, BiX } from "react-icons/bi";
+import { MeasurementsGraph } from "@/app/progress/records/graph";
 
-export default function BodyMeasurementsForm() {
+
+export default function Page() {
     const { data: session, status } = useSession();
-
-    const [bodyMeasurements, setBodyMeasurements] = useState({
-        name: "",
-        date: "",
-        weight: { pounds: 0, ounces: 0 },
-        height: { feet: 0, inches: 0 },
-        waistCircumference: 0,
-        hipCircumference: 0,
-    });
     
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        const updatedBodyMeasurements = { ...bodyMeasurements };
-
-        if (name.includes("weight") || name.includes("height")) {
-            // Handle nested properties for weight and height
-            const [group, subProperty] = name.split(".");
-            updatedBodyMeasurements[group][subProperty] = parseFloat(value);
-        } else {
-            updatedBodyMeasurements[name] = value;
-        }
-
-        setBodyMeasurements(updatedBodyMeasurements);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // You can submit the form data or perform any necessary action here
-    };
-
+    const { data: measurements, isLoading } = useBodyMeasurements(session?.user?.email);
+    
+    const { mutate: deleteBodyMeasurements, isPending } = useDeleteBodyMeasurements();
+    
+    function handleDelete(id) {
+        deleteBodyMeasurements({ id });
+    }
+    
+    const bodyMeasurementsData = useMemo(() => {
+        return measurements?.map(item => ({
+            "Weight": parseFloat(item.weight_pounds) + parseFloat(item.weight_ounces) / 16, // Combine pounds and ounces
+            date: new Date(item.date).toISOString().split("T")[0],
+        }))?.reverse();
+    }, [measurements]);
+    
     if (status === "loading") return null;
-
+    
     return (
         <PageSection title="Body measurements">
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Name:
-                    <input
-                        type="text"
-                        name="name"
-                        value={bodyMeasurements.name}
-                        onChange={handleInputChange}
-                    />
-                </label>
-
-                <label>
-                    Date:
-                    <input
-                        type="text"
-                        name="date"
-                        value={bodyMeasurements.date}
-                        onChange={handleInputChange}
-                    />
-                </label>
-
-                <label>
-                    Weight (lbs):
-                    <input
-                        type="number"
-                        name="weight.pounds"
-                        value={bodyMeasurements.weight.pounds}
-                        onChange={handleInputChange}
-                    />
-                </label>
-
-                <label>
-                    Weight (oz):
-                    <input
-                        type="number"
-                        name="weight.ounces"
-                        value={bodyMeasurements.weight.ounces}
-                        onChange={handleInputChange}
-                    />
-                </label>
-
-                <label>
-                    Height (feet):
-                    <input
-                        type="number"
-                        name="height.feet"
-                        value={bodyMeasurements.height.feet}
-                        onChange={handleInputChange}
-                    />
-                </label>
-
-                <label>
-                    Height (inches):
-                    <input
-                        type="number"
-                        name="height.inches"
-                        value={bodyMeasurements.height.inches}
-                        onChange={handleInputChange}
-                    />
-                </label>
-
-                <label>
-                    Waist Circumference (inches):
-                    <input
-                        type="number"
-                        name="waistCircumference"
-                        value={bodyMeasurements.waistCircumference}
-                        onChange={handleInputChange}
-                    />
-                </label>
-
-                <label>
-                    Hip Circumference (inches):
-                    <input
-                        type="number"
-                        name="hipCircumference"
-                        value={bodyMeasurements.hipCircumference}
-                        onChange={handleInputChange}
-                    />
-                </label>
-
-                <button type="submit" className="capture-button">
-                    Capture Body Measurements
-                </button>
-            </form>
-
-            {/* Display the measurements on the page */}
-            <div>
-                <h2>Body Measurements:</h2>
-                <ul>
-                    <li><strong>Name:</strong> {bodyMeasurements.name}</li>
-                    <li><strong>Date:</strong> {bodyMeasurements.date}</li>
-                    <li><strong>Weight:</strong> {bodyMeasurements.weight.pounds} lbs {bodyMeasurements.weight.ounces} oz</li>
-                    <li><strong>Height:</strong> {bodyMeasurements.height.feet}' {bodyMeasurements.height.inches}"</li>
-                    <li><strong>Waist Circumference (inches):</strong> {bodyMeasurements.waistCircumference}</li>
-                    <li><strong>Hip Circumference (inches):</strong> {bodyMeasurements.hipCircumference}</li>
-                </ul>
+            <div className="space-y-8">
+                
+                <MeasurementsGraph data={bodyMeasurementsData}/>
+                
+                <ResourceWithContent
+                    contentClassName="max-h-[21rem]"
+                >
+                    {/*Loading*/}
+                    {isLoading && <Spinner className="h-4 w-4 animate-spin"/>}
+                    
+                    {/*List of workouts*/}
+                    {(!isLoading && !!measurements?.length) &&
+                        <div className="space-y-2">
+                            {measurements?.map(item => (
+                                <ListItem key={item.id}>
+                                    <p className="text-base font-bold text-orange-600 dark:text-orange-200 mb-4 flex gap-2 items-center">
+                                        <BiCalendarAlt/>
+                                        <span>{format(new Date(item.date), "PPP")}</span>
+                                    </p>
+                                    
+                                    <div className="flex gap-4 text-md">
+                                        <div className="">
+                                            <div>
+                                                <p className="font-semibold">Weight:</p>
+                                                <p>{`${item.weight_pounds} pounds ${item.weight_ounces} ounces`}</p>
+                                            </div>
+                                            
+                                            <div>
+                                                <p className="font-semibold">Height:</p>
+                                                <p>{`${item.height_feet} feet ${item.height_inches} inches`}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="">
+                                            <div>
+                                                <p className="font-semibold">Waist Circumference:</p>
+                                                <p>{`${item.waist_circumference} inches`}</p>
+                                            </div>
+                                            
+                                            <div>
+                                                <p className="font-semibold">Hip Circumference:</p>
+                                                <p>{`${item.hip_circumference} inches`}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <p className="font-semibold">BMI:</p>
+                                            {/* Calculate BMI using the item data */}
+                                            {item.weight_pounds && item.height_feet && item.height_inches &&
+                                                <p>{calculateBMI(parseFloat(item.weight_pounds), parseFloat(item.height_feet), parseFloat(item.height_inches)).toFixed(1)}</p>
+                                            }
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="absolute top-2 right-2">
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button size="icon" variant="ghost">
+                                                    <BiX className="text-2xl"/>
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto p-0" align="start">
+                                                <div className="flex flex-col gap-2 p-4">
+                                                    <p className="text-lg font-semibold">Delete body measurements?</p>
+                                                    <p className="text-sm text-gray-500">This action cannot be
+                                                        undone.</p>
+                                                    <div className="flex gap-2">
+                                                        <Button variant="destructive" size="sm" disabled={isPending}
+                                                                onClick={() => handleDelete(item.id)}>Delete</Button>
+                                                    </div>
+                                                </div>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                </ListItem>
+                            ))}
+                        </div>}
+                    
+                    {/*Empty*/}
+                    {(!isLoading && !!measurements && measurements.length === 0) && <div>
+                        You have not recorded any body measurements.
+                    </div>}
+                </ResourceWithContent>
+                
+                <Separator/>
+                
+                <BodyMeasurementsForm/>
             </div>
         </PageSection>
+    );
+    
+}
+
+function calculateBMI(weightPounds, heightFeet, heightInches) {
+    const weightKg = weightPounds * 0.453592; // Convert pounds to kilograms
+    const heightMeters = ((heightFeet * 12) + heightInches) * 0.0254; // Convert feet and inches to meters
+    const bmi = weightKg / (heightMeters * heightMeters);
+    return bmi;
+}
+
+const formSchema = z.object({
+    date: z.date(),
+    weight_pounds: z.string().transform(v => parseInt(v))
+        .refine(v => !isNaN(v), "Value must be a valid number.")
+        .refine(v => v > 0, "Value must be greater than 0."),
+    weight_ounces: z.string().transform(v => parseInt(v))
+        .refine(v => !isNaN(v), "Value must be a valid number.")
+        .refine(v => v >= 0, "Value must be greater or equal to 0."),
+    height_feet: z.string().transform(v => parseInt(v))
+        .refine(v => !isNaN(v), "Value must be a valid number.")
+        .refine(v => v > 0, "Value must be greater than 0."),
+    height_inches: z.string().transform(v => parseInt(v))
+        .refine(v => !isNaN(v), "Value must be a valid number.")
+        .refine(v => v >= 0, "Value must be greater or equal to 0."),
+    waist_circumference: z.string().transform(v => parseInt(v))
+        .refine(v => !isNaN(v), "Value must be a valid number.")
+        .refine(v => v > 0, "Value must be greater than 0."),
+    hip_circumference: z.string().transform(v => parseInt(v))
+        .refine(v => !isNaN(v), "Value must be a valid number.")
+        .refine(v => v > 0, "Value must be greater than 0."),
+});
+
+export function BodyMeasurementsForm() {
+    
+    const { data: session } = useSession();
+    
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+    
+    const { mutate, isPending, status } = useInsertBodyMeasurements({
+        onSuccess: () => {
+            form.reset();
+        },
+    });
+    
+    function onSubmit(values) {
+        if (session?.user?.email) {
+            mutate({
+                ...values,
+                user_id: session?.user?.email,
+            });
+        }
+    }
+    
+    const Inputs = useCallback(() => {
+        return <>
+            <div className="flex gap-4 w-full">
+                <FormField
+                    control={form.control}
+                    name="weight_pounds"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Weight (lbs):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="weight_ounces"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Weight (oz):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+            </div>
+            
+            <div className="flex w-full gap-4">
+                <FormField
+                    control={form.control}
+                    name="height_feet"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Height (feet):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="height_inches"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Height (inches):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="waist_circumference"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Waist Circumference (inches):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="hip_circumference"
+                    render={({ field }) => (
+                        <FormItem className="w-full">
+                            <FormLabel>Hip Circumference (inches):</FormLabel>
+                            <FormControl>
+                                <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
+            </div>
+        </>;
+    }, [status === "success"]);
+    
+    return (
+        <ResourceWithContent scrolling={false} bodyClassName="p-0">
+            <Accordion type="single" collapsible>
+                <AccordionItem value="body-measurements" label="Body measurements">
+                    <AccordionTrigger className="p-4">
+                        Add measurements
+                    </AccordionTrigger>
+                    <AccordionContent className="p-4">
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="date"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Date</FormLabel>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant={"outline"}
+                                                            className={cn(
+                                                                "w-[240px] pl-3 text-left font-normal",
+                                                                !field.value && "text-muted-foreground",
+                                                            )}
+                                                        >
+                                                            {field.value ? (format(field.value, "PPP")) : (
+                                                                <span>Pick a date</span>
+                                                            )}
+                                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50"/>
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0" align="start">
+                                                    <Calendar
+                                                        mode="single"
+                                                        selected={field.value}
+                                                        onSelect={field.onChange}
+                                                        disabled={(date) =>
+                                                            date < new Date("1900-01-01")
+                                                        }
+                                                        initialFocus
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
+                                            <FormDescription>
+                                                Date of your measurements.
+                                            </FormDescription>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
+                                <Inputs/>
+                                <Button type="submit" className="capture-button" disabled={isPending}>
+                                    Capture Body Measurements
+                                </Button>
+                            </form>
+                        </Form>
+                    </AccordionContent>
+                </AccordionItem>
+            </Accordion>
+        </ResourceWithContent>
     );
 }

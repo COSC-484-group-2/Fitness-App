@@ -6,6 +6,7 @@ import { Spinner } from "@/components/spinner";
 import { MainNav } from "@/components/main-nav";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
+import { useSetAccount } from "@/lib/account";
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,7 @@ export function ClientProviders({ children }) {
         <SessionProvider>
             <JotaiProvider>
                 <QueryClientProvider client={queryClient}>
-                    <NextThemesProvider defaultTheme="dark" forcedTheme="dark" attribute="class"
+                    <NextThemesProvider defaultTheme="dark" attribute="class"
                                         disableTransitionOnChange>
                         <Wrapper>
                             {children}
@@ -29,7 +30,8 @@ export function ClientProviders({ children }) {
 
 export function Wrapper({ children }) {
     
-    const { status } = useSession();
+    const { data: session, status } = useSession();
+    useSetAccount(session, status);
     
     return <>
         {status === "loading" ?

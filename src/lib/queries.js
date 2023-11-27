@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 const DB_URI = "https://dkbimousmdwpkcdjaqoq.hasura.us-east-1.nhost.run/api/rest/";
 
-function dbEndpoint(endpoint) {
+export function dbEndpoint(endpoint) {
     return DB_URI + endpoint;
 }
 
@@ -17,6 +17,19 @@ export function getCategoryName(cat) {
         case "cardio":
             return "Cardio";
     }
+}
+
+export function useFeed(userId) {
+    return useQuery({
+        queryKey: ["get-feed"],
+        queryFn: async () => {
+            const res = await axios.get(dbEndpoint(`feed/${userId}`));
+            return res.data?.feed;
+        },
+        refetchInterval: 1000 * 60,
+        enabled: !!userId,
+        refetchOnWindowFocus: "always",
+    });
 }
 
 /**
@@ -67,6 +80,29 @@ export function useUserPersonalRecords(email) {
         queryFn: async () => {
             const res = await axios.get(dbEndpoint(`records/${encodeURI(email)}`));
             return res.data?.records;
+        },
+        enabled: !!email,
+    });
+}
+
+
+export function useBodyMeasurements(email) {
+    return useQuery({
+        queryKey: ["get-body-measurements", email],
+        queryFn: async () => {
+            const res = await axios.get(dbEndpoint(`body_measurement/${encodeURI(email)}`));
+            return res.data?.body_measurements;
+        },
+        enabled: !!email,
+    });
+}
+
+export function useCaloricIntakes(email) {
+    return useQuery({
+        queryKey: ["get-caloric-intakes", email],
+        queryFn: async () => {
+            const res = await axios.get(dbEndpoint(`caloric_intake/${encodeURI(email)}`));
+            return res.data?.caloric_intakes;
         },
         enabled: !!email,
     });
@@ -171,4 +207,157 @@ export function useDeletePersonalRecord() {
         deletePersonalRecord: (userId, workoutItemId) => mutate({ userId, workoutItemId }),
         isPending,
     };
+}
+
+export function useInsertBodyMeasurements({ onSuccess }) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["create-body-measurements"],
+        mutationFn: async (variables) => {
+            const res = await axios.post(dbEndpoint(`body_measurements`), {
+                object: {
+                    ...variables,
+                },
+            });
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Added");
+            await queryClient.refetchQueries({ queryKey: ["get-body-measurements"] });
+            onSuccess();
+        },
+    });
+}
+
+export function useDeleteBodyMeasurements() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["delete-body-measurements"],
+        mutationFn: async (variables) => {
+            const res = await axios.delete(dbEndpoint(`body_measurements/${variables.id}`));
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Removed");
+            await queryClient.refetchQueries({ queryKey: ["get-body-measurements"] });
+        },
+    });
+}
+
+export function useInsertCaloricIntake({ onSuccess }) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["insert-caloric-intake"],
+        mutationFn: async (variables) => {
+            const res = await axios.post(dbEndpoint(`caloric_intakes`), {
+                object: {
+                    ...variables,
+                },
+            });
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Added");
+            await queryClient.refetchQueries({ queryKey: ["get-caloric-intakes"] });
+            onSuccess();
+        },
+    });
+}
+
+
+export function useDeleteCaloricIntake() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["delete-caloric-intake"],
+        mutationFn: async (variables) => {
+            const res = await axios.delete(dbEndpoint(`caloric_intakes/${variables.id}`));
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Removed");
+            await queryClient.refetchQueries({ queryKey: ["get-caloric-intakes"] });
+        },
+    });
+}
+
+
+export function useCreatePost({ onSuccess }) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["create-post"],
+        mutationFn: async (variables) => {
+            const res = await axios.post(dbEndpoint(`feed`), {
+                object: {
+                    ...variables,
+                },
+            });
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Post created");
+            await queryClient.refetchQueries({ queryKey: ["get-feed"] });
+            onSuccess();
+        },
+    });
+}
+
+export function useDeletePost() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["delete-post"],
+        mutationFn: async (variables) => {
+            const res = await axios.delete(dbEndpoint(`feed/${variables.id}`));
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Removed");
+            await queryClient.refetchQueries({ queryKey: ["get-feed"] });
+        },
+    });
+}
+
+export function useLikePost({ onSuccess }) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["list-post"],
+        mutationFn: async (variables) => {
+            const res = await axios.post(dbEndpoint(`feed_likes`), {
+                object: {
+                    ...variables,
+                },
+            });
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Liked");
+            
+            setTimeout(() => {
+                (async () => {
+                    await queryClient.refetchQueries({ queryKey: ["get-feed"] });
+                })();
+            }, 2000);
+            
+            onSuccess();
+        },
+    });
+}
+
+export function useUnLikePost({ onSuccess }) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationKey: ["unlike-post"],
+        mutationFn: async (variables) => {
+            const res = await axios.delete(dbEndpoint(`feed_likes/${variables.postId}/${variables.userId}`));
+            return res?.data;
+        },
+        onSuccess: async () => {
+            toast.success("Unliked");
+            setTimeout(() => {
+                (async () => {
+                    await queryClient.refetchQueries({ queryKey: ["get-feed"] });
+                })();
+            }, 2000);
+            onSuccess();
+        },
+    });
 }

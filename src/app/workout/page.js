@@ -18,6 +18,7 @@ import { Spinner } from "@/components/spinner";
 import { ListItem } from "@/components/list-item";
 import { SimpleGrid } from "@/components/simple-grid";
 import { PageSection } from "@/components/page-section";
+import { WorkoutTimer } from "@/app/workout/timer";
 
 // Holds the user's workouts after they are fetched
 const userWorkoutsAtom = atom([]);
@@ -60,7 +61,9 @@ export default function Page() {
                     </Popover>
                 }
             >
-                <ResourceWithContent>
+                <ResourceWithContent
+                    contentClassName="max-h-[30rem]"
+                >
                     {/*Loading*/}
                     {isLoading && <Spinner className="h-4 w-4 animate-spin"/>}
                     
@@ -68,9 +71,21 @@ export default function Page() {
                     {(!isLoading && !!userWorkouts?.length) &&
                         <div className="space-y-2">
                             {userWorkouts?.map(uw => (
-                                <ListItem key={uw.id}>
-                                    <p className="text-xl font-bold text-orange-200">{uw.name}</p>
-                                    <p>{uw.user_workout_items.map(userWorkoutItem => userWorkoutItem.workout_item.name).join(", ")}</p>
+                                <ListItem
+                                    key={uw.id}
+                                    action={
+                                        <>
+                                            {uw.user_workout_items.length > 0 && <WorkoutTimer
+                                                workoutItems={uw.user_workout_items.map(userWorkoutItem => userWorkoutItem.workout_item.name)}/>}
+                                        </>
+                                    }
+                                >
+                                    <p className="text-xl font-bold text-orange-600 dark:text-orange-200">{uw.name}</p>
+                                    <ul
+                                        className="list-disc list-inside"
+                                    >{uw.user_workout_items.map(userWorkoutItem =>
+                                        <li key={userWorkoutItem.id}>{userWorkoutItem.workout_item.name}</li>)}
+                                    </ul>
                                 </ListItem>
                             ))}
                         </div>}
