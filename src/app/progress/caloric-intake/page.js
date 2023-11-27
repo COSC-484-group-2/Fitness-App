@@ -56,7 +56,7 @@ export default function Page() {
                                         <div className="flex gap-4 text-md">
                                             <div className="">
                                                 <div>
-                                                    <p className="font-semibold">Name:</p>
+                                                    <p className="font-semibold">Food item:</p>
                                                     <p>{item.name}</p>
                                                 </div>
                                                 
@@ -167,7 +167,7 @@ export function CaloricIntakesForm() {
                                     name="name"
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col">
-                                            <FormLabel>Name</FormLabel>
+                                            <FormLabel>Food item</FormLabel>
                                             <FormControl>
                                                 <Input type="text" {...field} />
                                             </FormControl>

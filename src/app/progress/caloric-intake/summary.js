@@ -40,12 +40,13 @@ export function DailyCaloricSummary({ caloricIntakes }) {
                     ? "No caloric goal set."
                     : `Remaining calories for today: ${remainingCalories}`}
             </div>
-            <CircularProgressBar completion={completionRate}/>
+            <CircularProgressBar completion={completionRate} remainingCalories={remainingCalories}
+                                 dailyCaloricGoal={dailyCaloricGoal}/>
         </div>
     );
 }
 
-function CircularProgressBar({ completion }) {
+function CircularProgressBar({ completion, remainingCalories, dailyCaloricGoal }) {
     return (
         <div className="relative w-40 h-40">
             <svg viewBox="0 0 36 36" className="absolute">
@@ -70,7 +71,8 @@ function CircularProgressBar({ completion }) {
                 />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-lg font-semibold">{Math.round(completion)}%</span>
+                <span
+                    className="text-lg font-semibold">{dailyCaloricGoal - remainingCalories} / {dailyCaloricGoal}</span>
             </div>
         </div>
     );
