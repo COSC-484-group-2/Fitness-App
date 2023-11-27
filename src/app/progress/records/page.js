@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { PageSection } from "@/components/page-section";
 import { z } from "zod";
@@ -20,6 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/spinner";
 import { ListItem } from "@/components/list-item";
 import { BiCalendarAlt, BiX } from "react-icons/bi";
+import { MeasurementsGraph } from "@/app/progress/records/graph";
 
 
 export default function Page() {
@@ -33,11 +34,20 @@ export default function Page() {
         deleteBodyMeasurements({ id });
     }
     
+    const bodyMeasurementsData = useMemo(() => {
+        return measurements?.map(item => ({
+            "Weight": parseFloat(item.weight_pounds) + parseFloat(item.weight_ounces) / 16, // Combine pounds and ounces
+            date: new Date(item.date).toISOString().split("T")[0],
+        }))?.reverse();
+    }, [measurements]);
+    
     if (status === "loading") return null;
     
     return (
         <PageSection title="Body measurements">
             <div className="space-y-8">
+                
+                <MeasurementsGraph data={bodyMeasurementsData}/>
                 
                 <ResourceWithContent
                     contentClassName="max-h-[21rem]"
