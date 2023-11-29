@@ -58,69 +58,92 @@ export default function Page() {
                     {/*List of workouts*/}
                     {(!isLoading && !!measurements?.length) &&
                         <div className="space-y-2">
-                            {measurements?.map(item => (
-                                <ListItem key={item.id}>
-                                    <p className="text-base font-bold text-orange-600 dark:text-orange-200 mb-4 flex gap-2 items-center">
-                                        <BiCalendarAlt/>
-                                        <span>{format(new Date(item.date), "PPP")}</span>
-                                    </p>
-                                    
-                                    <div className="flex gap-4 text-md">
-                                        <div className="">
-                                            <div>
-                                                <p className="font-semibold">Weight:</p>
-                                                <p>{`${item.weight_pounds} pounds ${item.weight_ounces} ounces`}</p>
-                                            </div>
-                                            
-                                            <div>
-                                                <p className="font-semibold">Height:</p>
-                                                <p>{`${item.height_feet} feet ${item.height_inches} inches`}</p>
-                                            </div>
-                                        </div>
+                            {measurements?.map(item => {
+                                
+                                const bmi = calculateBMI(parseFloat(item.weight_pounds), parseFloat(item.height_feet), parseFloat(item.height_inches)).toFixed(1);
+                                let bmiCategory = "";
+                                
+                                if (bmi < 18.5) {
+                                    bmiCategory = "Underweight";
+                                } else if (bmi >= 18.5 && bmi <= 24.9) {
+                                    bmiCategory = "Normal weight";
+                                } else if (bmi >= 25 && bmi <= 29.9) {
+                                    bmiCategory = "Overweight";
+                                } else {
+                                    bmiCategory = "Obesity";
+                                }
+                                
+                                return (
+                                    <ListItem key={item.id}>
+                                        <p className="text-base font-bold text-orange-600 dark:text-orange-200 mb-4 flex gap-2 items-center">
+                                            <BiCalendarAlt/>
+                                            <span>{format(new Date(item.date), "PPP")}</span>
+                                        </p>
                                         
-                                        <div className="">
-                                            <div>
-                                                <p className="font-semibold">Waist Circumference:</p>
-                                                <p>{`${item.waist_circumference} inches`}</p>
-                                            </div>
-                                            
-                                            <div>
-                                                <p className="font-semibold">Hip Circumference:</p>
-                                                <p>{`${item.hip_circumference} inches`}</p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div>
-                                            <p className="font-semibold">BMI:</p>
-                                            {/* Calculate BMI using the item data */}
-                                            {item.weight_pounds && item.height_feet && item.height_inches &&
-                                                <p>{calculateBMI(parseFloat(item.weight_pounds), parseFloat(item.height_feet), parseFloat(item.height_inches)).toFixed(1)}</p>
-                                            }
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="absolute top-2 right-2">
-                                        <Popover>
-                                            <PopoverTrigger asChild>
-                                                <Button size="icon" variant="ghost">
-                                                    <BiX className="text-2xl"/>
-                                                </Button>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0" align="start">
-                                                <div className="flex flex-col gap-2 p-4">
-                                                    <p className="text-lg font-semibold">Delete body measurements?</p>
-                                                    <p className="text-sm text-gray-500">This action cannot be
-                                                        undone.</p>
-                                                    <div className="flex gap-2">
-                                                        <Button variant="destructive" size="sm" disabled={isPending}
-                                                                onClick={() => handleDelete(item.id)}>Delete</Button>
-                                                    </div>
+                                        <div className="flex gap-4 text-md">
+                                            <div className="">
+                                                <div>
+                                                    <p className="font-semibold">Weight:</p>
+                                                    <p>{`${item.weight_pounds} pounds ${item.weight_ounces} ounces`}</p>
                                                 </div>
-                                            </PopoverContent>
-                                        </Popover>
-                                    </div>
-                                </ListItem>
-                            ))}
+                                                
+                                                <div>
+                                                    <p className="font-semibold">Height:</p>
+                                                    <p>{`${item.height_feet} feet ${item.height_inches} inches`}</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="">
+                                                <div>
+                                                    <p className="font-semibold">Waist Circumference:</p>
+                                                    <p>{`${item.waist_circumference} inches`}</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <p className="font-semibold">Hip Circumference:</p>
+                                                    <p>{`${item.hip_circumference} inches`}</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <p className="font-semibold">BMI:</p>
+                                                {/* Calculate BMI using the item data */}
+                                                {item.weight_pounds && item.height_feet && item.height_inches &&
+                                                    <p>{bmi}</p>
+                                                }
+                                                <p className="font-semibold">BMI Category:</p>
+                                                {/* Calculate BMI using the item data */}
+                                                {item.weight_pounds && item.height_feet && item.height_inches &&
+                                                    <p>{bmiCategory}</p>
+                                                }
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="absolute top-2 right-2">
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button size="icon" variant="ghost">
+                                                        <BiX className="text-2xl"/>
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0" align="start">
+                                                    <div className="flex flex-col gap-2 p-4">
+                                                        <p className="text-lg font-semibold">Delete body
+                                                            measurements?</p>
+                                                        <p className="text-sm text-gray-500">This action cannot be
+                                                            undone.</p>
+                                                        <div className="flex gap-2">
+                                                            <Button variant="destructive" size="sm" disabled={isPending}
+                                                                    onClick={() => handleDelete(item.id)}>Delete</Button>
+                                                        </div>
+                                                    </div>
+                                                </PopoverContent>
+                                            </Popover>
+                                        </div>
+                                    </ListItem>
+                                );
+                                
+                            })}
                         </div>}
                     
                     {/*Empty*/}

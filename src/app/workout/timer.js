@@ -86,7 +86,7 @@ export const WorkoutTimer = ({ workoutItems, defaultDuration = 1 }) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">
+                <Button variant="outline" className="mr-8">
                     <BiTimer className="text-lg mr-2"/> Start
                 </Button>
             </DialogTrigger>

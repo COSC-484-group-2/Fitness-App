@@ -7,7 +7,12 @@ import { ResourceWithContent } from "@/components/resource-with-content";
 import { useRouter } from "next/navigation";
 import { BiPlus, BiX } from "react-icons/bi";
 import { Separator } from "@/components/ui/separator";
-import { useInsertWorkoutItemIntoUserWorkout, useUserWorkouts, useWorkoutItemsByCategory, useDeleteUserWorkout} from "@/lib/queries";
+import {
+    useDeleteUserWorkout,
+    useInsertWorkoutItemIntoUserWorkout,
+    useUserWorkouts,
+    useWorkoutItemsByCategory,
+} from "@/lib/queries";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { GiBodyBalance, GiLeg, GiRun } from "react-icons/gi";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -211,7 +216,7 @@ const WorkoutTypeList = memo(({ category }) => {
                     key={item.id}
                     action={<Menubar>
                         <MenubarMenu>
-                            <MenubarTrigger><FiPlus className="text-xl"/></MenubarTrigger>
+                            <MenubarTrigger className="cursor-pointer"><FiPlus className="text-xl"/></MenubarTrigger>
                             <MenubarContent>
                                 {userWorkouts.length === 0 && <p className="p-2">No workouts</p>}
                                 {userWorkouts?.map(uw => {
