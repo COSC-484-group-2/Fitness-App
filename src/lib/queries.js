@@ -133,7 +133,7 @@ export function useCreateUserWorkout() {
 
 export function useDeleteUserWorkout() {
     const queryClient = useQueryClient();
-    const { mutate, isPending } = useMutation({
+    return useMutation({
         mutationKey: ["delete-user-workout"],
         mutationFn: async (variables) => {
             const res = await axios.delete(dbEndpoint(`user_workouts/${variables.id}`));
@@ -144,11 +144,6 @@ export function useDeleteUserWorkout() {
             await queryClient.refetchQueries({ queryKey: ["get-user-workouts"] });
         },
     });
-    
-    return {
-        deleteUserWorkout: (id) => mutate({ id }),
-        isPending,
-    };
 }
 
 export function useInsertWorkoutItemIntoUserWorkout() {

@@ -5,12 +5,12 @@ import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import { GiStrong } from "@react-icons/all-files/gi/GiStrong";
 import { ResourceWithContent } from "@/components/resource-with-content";
 import { useRouter } from "next/navigation";
-import { BiPlus } from "react-icons/bi";
+import { BiPlus, BiX } from "react-icons/bi";
 import { Separator } from "@/components/ui/separator";
-import { useInsertWorkoutItemIntoUserWorkout, useUserWorkouts, useWorkoutItemsByCategory } from "@/lib/queries";
+import { useInsertWorkoutItemIntoUserWorkout, useUserWorkouts, useWorkoutItemsByCategory, useDeleteUserWorkout} from "@/lib/queries";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { GiBodyBalance, GiLeg, GiRun } from "react-icons/gi";
-import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CreateWorkoutPopover } from "@/app/workout/create-workout-popover";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { memo, useEffect, useMemo } from "react";
@@ -37,6 +37,12 @@ export default function Page() {
             setUserWorkoutsAtom(userWorkouts);
         }
     }, [userWorkouts]);
+
+    const { mutate: deleteUserWorkout, isPending } = useDeleteUserWorkout();
+
+    function handleDelete(id) {
+        deleteUserWorkout({ id });
+    }
     
     if (status === "loading") return null;
     
@@ -86,6 +92,32 @@ export default function Page() {
                                     >{uw.user_workout_items.map(userWorkoutItem =>
                                         <li key={userWorkoutItem.id}>{userWorkoutItem.workout_item.name}</li>)}
                                     </ul>
+                                    <div className="absolute top-2 right-2">
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button size="icon" variant="ghost">
+                                                        <BiX className="text-2xl"/>
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0" align="start">
+                                                    <div className="flex flex-col gap-2 p-4">
+                                                        <p className="text-lg font-semibold">Delete "{uw.name}" workout?</p>
+                                                        <p className="text-sm text-gray-500">This action cannot be
+                                                            undone.</p>
+                                                        <div className="flex gap-2">
+                                                            <Button
+                                                                variant="destructive"
+                                                                size="sm"
+                                                                disabled={isPending}
+                                                                onClick={() => handleDelete(uw.id)}
+                                                            >
+                                                                Delete
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </PopoverContent>
+                                            </Popover>
+                                        </div>
                                 </ListItem>
                             ))}
                         </div>}
