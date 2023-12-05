@@ -63,6 +63,7 @@ export default function Page() {
                         <ResourceWithContent
                             name={"Current Statistics"}
                             icon={TfiStatsUp}
+                            scrolling={false}
                         >
                             <CurrentStats/>
                         </ResourceWithContent>

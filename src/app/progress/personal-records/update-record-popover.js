@@ -75,9 +75,17 @@ export function UpdateRecordPopover({ workoutItem, defaultValue }) {
 export function getUnitFromWorkoutItem(workoutItem) {
     if (workoutItem.name === "Plank")
         return "minutes";
+    if (workoutItem.name === "Deadlift")
+        return "lbs";
+    if (workoutItem.name === "Bench Press")
+        return "lbs";
+    if (workoutItem.name === "Leg Press")
+        return "lbs";
     switch (workoutItem.category) {
         case "cardio":
             return "miles";
+        case "full-body":
+            return "reps";
         default :
             return "reps";
     }
