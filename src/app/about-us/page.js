@@ -1,4 +1,5 @@
 "use client";
+import "./style.css";
 
 export default function () {
     
@@ -20,12 +21,12 @@ export default function () {
                 minHeight: "53vh",
             }}>
                 <p className="text-3xl md:text-2xl font-bold">Developed By:</p>
-                <a href="https://github.com/zbonfo" className="text-base">Zaki Bonfoh</a>
-                <a href="https://github.com/subilawal" className="text-base">Olasubomi Lawal</a>
-                <a href="https://github.com/MATHEWMESFIN" className="text-base">Mathew Mesfin</a>
-                <a href="https://github.com/joguns1" className="text-base">Joshua Ogunsola</a>
-                <a href="https://github.com/JephtahOpoku" className="text-base">Jephtah Opoku</a>
-                <a href="https://github.com/SimonYoseph" className="text-base">Simon Yoseph</a><br></br>
+                <a href="https://github.com/zbonfo" className="text-base transition-colors hover:text-primary">Zaki Bonfoh</a>
+                <a href="https://github.com/subilawal" className="text-base transition-colors hover:text-primary">Olasubomi Lawal</a>
+                <a href="https://github.com/MATHEWMESFIN" className="text-base transition-colors hover:text-primary">Mathew Mesfin</a>
+                <a href="https://github.com/joguns1" className="text-base transition-colors hover:text-primary">Joshua Ogunsola</a>
+                <a href="https://github.com/JephtahOpoku" className="text-base transition-colors hover:text-primary">Jephtah Opoku</a>
+                <a href="https://github.com/SimonYoseph" className="text-base transition-colors hover:text-primary">Simon Yoseph</a><br></br>
                 <img style={{ height: 50, textAlign: "center" }} src="/icon.png" alt="MyFit Icon"></img>
             </div>
         </div>
